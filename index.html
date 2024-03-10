@@ -1,0 +1,1072 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kalsir</title>
+
+    <link rel="shortcut icon" href="logo.png" type="image/x-icon">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans&display=swap" rel="stylesheet">
+    <style>
+        [x-cloak] {
+            display: none !important;
+        }
+
+        /* Hide scrollbar for Chrome, Safari and Opera */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+
+        /* Hide scrollbar for IE, Edge and Firefox */
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            /* IE and Edge */
+            scrollbar-width: none;
+            /* Firefox */
+        }
+    </style>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    keyframes: {
+                        progress: {
+                            "0%": { transform: "translateX(-100%)" },
+                            "100%": { transform: "translateX(0)" },
+                        },
+                    },
+                    animation: {
+                        progress: "progress 2000ms 1",
+                    },
+                },
+            },
+        };
+    </script>
+    <script src="alpine-focus.js"></script>
+    <!-- <script src="alpine-mask.js"></script> -->
+    <script src="alpine-persist.js"></script>
+    <script src="script.js"></script>
+    <script defer src="alpine.js"></script>
+</head>
+
+<body class="text-base antialiased text-gray-800 bg-gray-50 lg:text-lg">
+    <!-- Header -->
+    <header class="relative flex items-center justify-between p-2 mx-auto border-b-2 border-b-gray-800 md:container"
+        x-data="profile">
+        <div class="flex items-center gap-4 cursor-pointer" @click="toggleIsModal()">
+            <img :src="profile.profilePicture" alt="Foto Profil"
+                class="border rounded-full bg-emerald-200 border-emerald-600 w-14 h-14 md:w-20 md:h-20">
+            <div>
+                <h3 class="text-lg font-semibold lg:text-xl" x-text="profile.cashierName"></h3>
+                <p class="text-sm leading-5 lg:text-base" x-text="profile.shopName"></p>
+            </div>
+        </div>
+        <div class="z-10 flex flex-col items-center gap-1 md:items-stretch">
+            <button @click="$store.global.isStorage = true"
+                class=" inline-flex items-center gap-1 px-2 py-1 font-medium border border-gray-800 min-h-[2.25rem] md:min-h-[2.5rem] rounded-lg focus:outline-none focus-visible:ring hover:bg-gray-100">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                    stroke="currentColor" class="w-6 h-6">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                        d="M20.25 6.375c0 2.278-3.694 4.125-8.25 4.125S3.75 8.653 3.75 6.375m16.5 0c0-2.278-3.694-4.125-8.25-4.125S3.75 4.097 3.75 6.375m16.5 0v11.25c0 2.278-3.694 4.125-8.25 4.125s-8.25-1.847-8.25-4.125V6.375m16.5 0v3.75m-16.5-3.75v3.75m16.5 0v3.75C20.25 16.153 16.556 18 12 18s-8.25-1.847-8.25-4.125v-3.75m16.5 0c0 2.278-3.694 4.125-8.25 4.125s-8.25-1.847-8.25-4.125" />
+                </svg>
+                <span class="hidden sm:block">Data</span>
+            </button>
+            <button @click="$store.global.isProduct = true"
+                class=" inline-flex items-center gap-1 px-2 py-1 font-medium border border-gray-800 min-h-[2.25rem] md:min-h-[2.5rem] rounded-lg focus:outline-none focus-visible:ring hover:bg-gray-100">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                    stroke="currentColor" class="w-6 h-6">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                        d="m21 7.5-9-5.25L3 7.5m18 0-9 5.25m9-5.25v9l-9 5.25M3 7.5l9 5.25M3 7.5v9l9 5.25m0-9v9" />
+                </svg>
+                <span class="hidden sm:block">Product</span>
+            </button>
+            <!-- Modal -->
+            <div x-show="isModal" x-transition x-cloak
+                class="fixed inset-0 z-50 flex items-center justify-center w-full bg-slate-800/80 md:mx-auto">
+                <div class="w-full max-w-xl mx-4 overflow-hidden bg-white rounded-sm shadow"
+                    @click.outside="toggleIsModal()">
+                    <div class="flex justify-between px-4 py-2 bg-emerald-600">
+                        <h2 class="text-xl font-semibold text-white lg:text-2xl">Edit Profile</h2>
+                    </div>
+                    <form @submit.prevent="toggleIsModal()" class="px-4 my-4">
+                        <div class="my-2">
+                            <label for="profile.cashierName" class="text-sm text-gray-700 lg:text-base">Nama
+                                Kasir</label>
+                            <input type="text" id="profile.cashierName" x-model="profile.cashierName"
+                                class="selection:bg-emerald-100 w-full min-h-[2.25rem] py-0 md:min-h-[2.5rem] border-b-2 font-medium focus:border-b-gray-800 border-b-gray-400 outline-0">
+                        </div>
+                        <div class="my-2">
+                            <label for="profile.shopName" class="text-sm text-gray-700 lg:text-base">Nama Toko</label>
+                            <input type="text" id="profile.shopName" x-model="profile.shopName"
+                                class="selection:bg-emerald-100 w-full min-h-[2.25rem] py-0 md:min-h-[2.5rem] border-b-2 font-medium focus:border-b-gray-800 border-b-gray-400 outline-0">
+                        </div>
+                        <div class="my-2">
+                            <label for="profile.address" class="text-sm text-gray-700 lg:text-base">Alamat Toko</label>
+                            <input type="text" id="profile.address" x-model="profile.address"
+                                class="selection:bg-emerald-100 w-full min-h-[2.25rem] py-0 md:min-h-[2.5rem] border-b-2 font-medium focus:border-b-gray-800 border-b-gray-400 outline-0">
+                        </div>
+                        <div class="my-2">
+                            <label for="profile.message" class="text-sm text-gray-700 lg:text-base">Message</label>
+                            <input type="text" id="profile.message" x-model="profile.message"
+                                class="selection:bg-emerald-100 w-full min-h-[2.25rem] py-0 md:min-h-[2.5rem] border-b-2 font-medium focus:border-b-gray-800 border-b-gray-400 outline-0">
+                        </div>
+                        <div class="my-2">
+                            <label for="profile.emailAddress" class="text-sm text-gray-700 lg:text-base">Email
+                                Adress</label>
+                            <input type="text" id="profile.emailAddress" x-model="profile.emailAddress"
+                                class="selection:bg-emerald-100 w-full min-h-[2.25rem] py-0 md:min-h-[2.5rem] border-b-2 font-medium focus:border-b-gray-800 border-b-gray-400 outline-0">
+                        </div>
+                        <div class="my-2">
+                            <label for="profile.phoneNumber" class="text-sm text-gray-700 lg:text-base">Phone
+                                Number</label>
+                            <input type="text" id="profile.phoneNumber" x-model="profile.phoneNumber"
+                                class="selection:bg-emerald-100 w-full min-h-[2.25rem] py-0 md:min-h-[2.5rem] border-b-2 font-medium focus:border-b-gray-800 border-b-gray-400 outline-0">
+                        </div>
+                        <div class="my-2">
+                            <label for="profile.profilePicture" class="text-sm text-gray-700 lg:text-base">Profile
+                                Picture</label>
+                            <input type="text" id="profile.profilePicture" x-model="profile.profilePicture"
+                                class="selection:bg-emerald-100 w-full min-h-[2.25rem] py-0 md:min-h-[2.5rem] border-b-2 font-medium focus:border-b-gray-800 border-b-gray-400 outline-0">
+                            <div class="flex items-center mt-2 overflow-x-scroll no-scrollbar">
+                                <template x-for="avatar in avatars">
+                                    <img x-on:click="profile.profilePicture = avatar" :src="avatar" alt="avatar"
+                                        :class="profile.profilePicture == avatar ? 'border-2 border-gray-600':''"
+                                        class="w-20 h-20 mx-2 my-2 bg-gray-200 rounded-full cursor-pointer">
+                                </template>
+                            </div>
+                        </div>
+                        <div class="flex justify-end mt-8">
+                            <button type="submit"
+                                class="inline-flex items-center justify-center px-2 font-medium text-emerald-600 focus:outline-none">UPDATE</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </header>
+    <main>
+        <div class="md:container md:mx-auto">
+            <!-- Order / Main Page -->
+            <div x-cloak x-data="order" @keyup.escape.window="filterByKeyword= ''"
+                @keyup.ctrl.c.window="selectedProducts.length ? cancelOrder() : ''"
+                @keyup.ctrl.enter.window="selectedProducts.length ? finishOrder() : ''"
+                @keyup.ctrl.space.window="selectedProducts.length ? isPay = !isPay : ''"
+                @keyup.slash.window="$focus.focus(searchOrder)" class="flex flex-col gap-4 mt-2 mb-28 sm:flex-row">
+                <!-- Search & Order Product -->
+                <div class="relative flex-1 mx-4 md:mx-0">
+                    <!-- Input Search Product -->
+                    <div class="relative mt-2">
+                        <input x-model="filterByKeyword" type="text" id="searchOrder" x-ref="searchInput"
+                            @keyup.enter="$el.blur()" autocomplete="off"
+                            :class="!products.length && filterByKeyword ? 'border-red-500' : ''"
+                            class="flex-1 w-full px-2 py-1 bg-white border outline-none selection:bg-emerald-100 md:min-h-11 min-h-10 border-emerald-500 rounded-xl"
+                            placeholder="Cari produk berdasarkan nama ...">
+                        <button tabindex="-1" x-show="filterByKeyword" @click="filterByKeyword = ''"
+                            title="Hapus pencarian" class="absolute inset-y-0 right-0 px-2 rounded-r-xl">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                                stroke="currentColor" class="w-5 h-5 md:w-6 md:h-6">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
+                            </svg>
+                        </button>
+                    </div>
+                    <!-- Product List -->
+                    <div class="absolute inset-x-0 bg-gray-100 sm:static max-h-[70vh] sm:max-h-max overflow-y-auto"
+                        x-ref="searchList" @keyup.down="$focus.wrap().next()" @keyup.up="$focus.wrap().previous()"
+                        @keyup.ctrl.down="$focus.last()">
+                        <template x-for="(product, index) in products" :key="index">
+                            <div class="relative mt-2 focus:border focus:outline-emerald-500" tabindex="0"
+                                x-show="filterByKeyword" @keyup.enter="selectProduct(product.id)"
+                                @keyup.right="selectedProducts.includes(product.id) ? setQuantity(product.id, '+') : selectProduct(product.id)"
+                                @keyup.left="selectedProducts.includes(product.id) ? setQuantity(product.id, '-') : ''"
+                                @keyup.delete="selectedProducts.includes(product.id) ? unSelectProduct(product.id) : ''">
+                                <div @click="selectProduct(product.id)"
+                                    :class="selectedProducts.includes(product.id) ? 'border-emerald-500 shadow bg-white' : 'border-gray-800 '"
+                                    class="flex items-start p-2 border rounded cursor-pointer gap-y-2 gap-x-3">
+                                    <div class="p-1 mt-2 border border-gray-700 rounded-xl">
+                                        <template x-for="type in types">
+                                            <template x-if="product.typeId == type.id">
+                                                <img :src="'icon/' + type.icon" :alt="type.name" class="max-w-6">
+                                            </template>
+                                        </template>
+                                    </div>
+                                    <div class="flex flex-col justify-between w-full h-full">
+                                        <div class="flex text-lg font-medium gap-x-1 lg:text-xl">
+                                            <h3 x-text="product.name"></h3>
+                                            <div class="flex">
+                                                <span>/</span>
+                                                <template x-for="unit in units">
+                                                    <template x-if="product.unitId == unit.id">
+                                                        <span x-text="unit.shortName"></span>
+                                                    </template>
+                                                </template>
+                                            </div>
+                                        </div>
+                                        <p class="text-base font-medium lg:text-lg"
+                                            x-text="formatRupiah(product.price)"></p>
+                                    </div>
+                                </div>
+                                <div class="absolute bottom-1 right-1" x-show="selectedProducts.includes(product.id)">
+                                    <template x-for="ordered in orderedProducts">
+                                        <template x-if="ordered.id == product.id">
+                                            <div class="flex">
+                                                <button
+                                                    class="p-1 rounded-lg hover:bg-emerald-100 focus:outline-emerald-500"
+                                                    @click="ordered.quantity > 1 ? ordered.quantity-- : unSelectProduct(ordered.id);">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none"
+                                                        viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+                                                        class="w-6 h-6">
+                                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                                            d="M5 12h14" />
+                                                    </svg>
+                                                </button>
+                                                <div class="p-1 font-bold" x-model="ordered.quantity"
+                                                    x-text="ordered.quantity"></div>
+                                                <button @click="ordered.quantity++"
+                                                    class="p-1 rounded-lg hover:bg-emerald-100 focus:outline-emerald-500">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none"
+                                                        viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+                                                        class="w-6 h-6">
+                                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                                            d="M12 4.5v15m7.5-7.5h-15" />
+                                                    </svg>
+                                                </button>
+                                            </div>
+                                        </template>
+                                    </template>
+                                </div>
+                            </div>
+                        </template>
+                        <div x-show="!products.length && filterByKeyword"
+                            class="flex-col items-center justify-center hidden py-4 mt-4 text-center bg-gray-200 border border-gray-400 sm:flex min-h-64 gap-y-5">
+                            <img src="404.png" alt="Ilustrasi 404 Not Found" class="max-h-72">
+                            <h1 class="text-6xl font-extrabold">404</h1>
+                            <div class="text-xl">Produk Tidak Ditemukan</div>
+                            <div class="px-20 text-gray-600">
+                                Mungkin produk tidak tersedia atau keyword mu bermasalah. Silakan lakukan
+                                pencarian ulang.
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Tips Shortcut -->
+                    <!-- Hint -->
+                    <div class="flex-col hidden p-2 mt-4 bg-gray-200 border border-gray-400 sm:flex min-h-64">
+                        <div class="flex items-center gap-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
+                                stroke="currentColor" class="w-5 h-5">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M12 18v-5.25m0 0a6.01 6.01 0 001.5-.189m-1.5.189a6.01 6.01 0 01-1.5-.189m3.75 7.478a12.06 12.06 0 01-4.5 0m3.75 2.383a14.406 14.406 0 01-3 0M14.25 18v-.192c0-.983.658-1.823 1.508-2.316a7.5 7.5 0 10-7.517 0c.85.493 1.509 1.333 1.509 2.316V18" />
+                            </svg>
+                            <span class="pt-0.5 font-bold text-lg uppercase">Keyboard Shortcut</span>
+                        </div>
+                        <p class="pl-7">
+                            Keyboard Shortcuts membantumu mempercepat pengerjaan Kasir dengan pintasan tombol Keyboard.
+                            Pintasan bekerja menyesuaikan Scope (keadaan focus) saat ini.
+                        </p>
+                        <!-- Window -->
+                        <div class="px-2 my-2">
+                            <div class="flex items-center gap-x-2">
+                                <div class="mb-1 text-lg font-bold">Window</div>
+                                <p class="text-sm font-normal text-gray-500">
+                                    Keadaan focus sedang tidak focus pada element apapun
+                                </p>
+                            </div>
+                            <div class="text-base">
+                                <div class="grid grid-cols-12 my-1 gap-x-2 hover:bg-gray-100">
+                                    <div class="flex items-start col-span-5 lg:col-span-3 gap-x-1">
+                                        <div class="px-2 border-2 rounded border-slate-500 w-fit">Tab</div>
+                                    </div>
+                                    <p class="col-span-7 lg:col-span-9">Pindah Focus</p>
+                                </div>
+                                <div class="grid grid-cols-12 my-1 gap-x-2 hover:bg-gray-100">
+                                    <div class="flex items-start col-span-5 lg:col-span-3 gap-x-1">
+                                        <div class="px-2 border-2 rounded border-slate-500 w-fit">Esc</div>
+                                    </div>
+                                    <p class="col-span-7 lg:col-span-9">Hapus Pencarian</p>
+                                </div>
+                                <div class="grid grid-cols-12 my-1 gap-x-2 hover:bg-gray-100">
+                                    <div class="flex items-start col-span-5 lg:col-span-3 gap-x-1">
+                                        <div class="px-2 border-2 rounded border-slate-500 w-fit">/</div>
+                                    </div>
+                                    <p class="col-span-7 lg:col-span-9">Input Pencarian</p>
+                                </div>
+                                <div class="grid grid-cols-12 my-1 gap-x-2 hover:bg-gray-100">
+                                    <div class="flex items-start col-span-5 lg:col-span-3 gap-x-1">
+                                        <div class="px-2 border-2 rounded border-slate-500 w-fit">Ctrl</div>
+                                        <div class="px-2 border-2 rounded border-slate-500 w-fit">C</div>
+                                    </div>
+                                    <p class="col-span-7 lg:col-span-9">
+                                        Saat ada produk diorder, pintasan ini akan membatalkan Order
+                                    </p>
+                                </div>
+                                <div class="grid grid-cols-12 my-1 gap-x-2 hover:bg-gray-100">
+                                    <div class="flex items-start col-span-5 lg:col-span-3 gap-x-1">
+                                        <div class="px-2 border-2 rounded border-slate-500 w-fit">Ctrl</div>
+                                        <div class="px-2 border-2 rounded border-slate-500 w-fit">Enter</div>
+                                    </div>
+                                    <p class="col-span-7 lg:col-span-9">
+                                        Saat ada produk diorder, pintasan ini akan menyelesaikan Order
+                                    </p>
+                                </div>
+                                <div class="grid grid-cols-12 my-1 gap-x-2 hover:bg-gray-100">
+                                    <div class="flex items-start col-span-5 lg:col-span-3 gap-x-1">
+                                        <div class="px-2 border-2 rounded border-slate-500 w-fit">Ctrl</div>
+                                        <div class="px-2 border-2 rounded border-slate-500 w-fit">Space</div>
+                                    </div>
+                                    <p class="col-span-7 lg:col-span-9">
+                                        Saat ada produk diorder, pintasan ini akan menampilkan / menyembunyikan Inputan
+                                        Bayar
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Search Input -->
+                        <div class="px-2 my-2">
+                            <div class="flex items-center gap-x-2">
+                                <div class="mb-1 text-lg font-bold">Search Input</div>
+                                <p class="text-sm font-normal text-gray-500">
+                                    Keadaan sedang focus pada kolom pencarian produk
+                                </p>
+                            </div>
+                            <div class="text-base">
+                                <div class="grid grid-cols-12 my-1 gap-x-2 hover:bg-gray-100">
+                                    <div class="flex items-start col-span-5 lg:col-span-3 gap-x-1">
+                                        <div class="px-2 border-2 rounded border-slate-500 w-fit">Enter</div>
+                                    </div>
+                                    <p class="col-span-7 lg:col-span-9">Menetralkan focus dari element Search Input</p>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Product List -->
+                        <div class="px-2 my-2">
+                            <div class="flex items-center gap-x-2">
+                                <div class="mb-1 text-lg font-bold">Product List</div>
+                                <p class="text-sm font-normal text-gray-500">
+                                    Keadaan sedang focus pada list produk hasil pencarian
+                                </p>
+                            </div>
+                            <div class="text-base">
+                                <div class="grid grid-cols-12 my-1 gap-x-2 hover:bg-gray-100">
+                                    <div class="flex items-start col-span-5 lg:col-span-3 gap-x-1">
+                                        <div class="px-2 border-2 rounded border-slate-500 w-fit">
+                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                                stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                                                <path stroke-linecap="round" stroke-linejoin="round"
+                                                    d="m4.5 15.75 7.5-7.5 7.5 7.5" />
+                                            </svg>
+                                        </div>
+                                    </div>
+                                    <p class="col-span-7 lg:col-span-9">Pindah focus ke element sebelumnya dan focus
+                                        akan berputar</p>
+                                </div>
+                                <div class="grid grid-cols-12 my-1 gap-x-2 hover:bg-gray-100">
+                                    <div class="flex items-start col-span-5 lg:col-span-3 gap-x-1">
+                                        <div class="px-2 border-2 rounded border-slate-500 w-fit">
+                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                                stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                                                <path stroke-linecap="round" stroke-linejoin="round"
+                                                    d="m19.5 8.25-7.5 7.5-7.5-7.5" />
+                                            </svg>
+                                        </div>
+                                    </div>
+                                    <p class="col-span-7 lg:col-span-9">Pindah focus ke element selanjutnya dan focus
+                                        akan berputar</p>
+                                </div>
+                                <div class="grid grid-cols-12 my-1 gap-x-2 hover:bg-gray-100">
+                                    <div class="flex items-start col-span-5 lg:col-span-3 gap-x-1">
+                                        <div class="px-2 border-2 rounded border-slate-500 w-fit">
+                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                                stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                                                <path stroke-linecap="round" stroke-linejoin="round"
+                                                    d="M15.75 19.5 8.25 12l7.5-7.5" />
+                                            </svg>
+                                        </div>
+                                    </div>
+                                    <p class="col-span-7 lg:col-span-9">Saat ada produk diorder, jika quantity nya 1,
+                                        pintasan ini akan membatalkan produk. Tapi jika lebih, pintasan ini akan
+                                        mengurangi 1 quantity</p>
+                                </div>
+                                <div class="grid grid-cols-12 my-1 gap-x-2 hover:bg-gray-100">
+                                    <div class="flex items-start col-span-5 lg:col-span-3 gap-x-1">
+                                        <div class="px-2 border-2 rounded border-slate-500 w-fit">
+                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                                stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                                                <path stroke-linecap="round" stroke-linejoin="round"
+                                                    d="m8.25 4.5 7.5 7.5-7.5 7.5" />
+                                            </svg>
+                                        </div>
+                                    </div>
+                                    <p class="col-span-7 lg:col-span-9">Saat ada produk diorder, pintasan ini akan
+                                        menambah 1 quantity. Tapi jika tidak ada di order, pintasan ini akan membuat
+                                        order.</p>
+                                </div>
+                                <div class="grid grid-cols-12 my-1 gap-x-2 hover:bg-gray-100">
+                                    <div class="flex items-start col-span-5 lg:col-span-3 gap-x-1">
+                                        <div class="px-2 border-2 rounded border-slate-500 w-fit">Ctrl</div>
+                                        <div class="px-2 border-2 rounded border-slate-500 w-fit">
+                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                                stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                                                <path stroke-linecap="round" stroke-linejoin="round"
+                                                    d="m19.5 8.25-7.5 7.5-7.5-7.5" />
+                                            </svg>
+                                        </div>
+                                    </div>
+                                    <p class="col-span-7 lg:col-span-9">Pindah focus ke element terakhir</p>
+                                </div>
+                                <div class="text-base">
+                                    <div class="grid grid-cols-12 my-1 gap-x-2 hover:bg-gray-100">
+                                        <div class="flex items-start col-span-5 lg:col-span-3 gap-x-1">
+                                            <div class="px-2 border-2 rounded border-slate-500 w-fit">Enter</div>
+                                        </div>
+                                        <p class="col-span-7 lg:col-span-9">Membuat order</p>
+                                    </div>
+                                </div>
+                                <div class="text-base">
+                                    <div class="grid grid-cols-12 my-1 gap-x-2 hover:bg-gray-100">
+                                        <div class="flex items-start col-span-5 lg:col-span-3 gap-x-1">
+                                            <div class="px-2 border-2 rounded border-slate-500 w-fit">Delete</div>
+                                        </div>
+                                        <p class="col-span-7 lg:col-span-9">Saat ada produk diorder, pintasan ini akan
+                                            membatalkan order</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Order List -->
+                        <div class="px-2 my-2">
+                            <div class="flex items-center gap-x-2">
+                                <div class="mb-1 text-lg font-bold">Order List</div>
+                                <p class="text-sm font-normal text-gray-500">
+                                    Keadaan sedang focus pada list produk pada struk
+                                </p>
+                            </div>
+                            <div class="text-base">
+                                <div class="grid grid-cols-12 my-1 gap-x-2 hover:bg-gray-100">
+                                    <div class="flex items-start col-span-5 lg:col-span-3 gap-x-1">
+                                        <div class="px-2 border-2 rounded border-slate-500 w-fit">
+                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                                stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                                                <path stroke-linecap="round" stroke-linejoin="round"
+                                                    d="m4.5 15.75 7.5-7.5 7.5 7.5" />
+                                            </svg>
+                                        </div>
+                                    </div>
+                                    <p class="col-span-7 lg:col-span-9">Pindah focus ke element sebelumnya dan focus
+                                        akan berputar</p>
+                                </div>
+                                <div class="grid grid-cols-12 my-1 gap-x-2 hover:bg-gray-100">
+                                    <div class="flex items-start col-span-5 lg:col-span-3 gap-x-1">
+                                        <div class="px-2 border-2 rounded border-slate-500 w-fit">
+                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                                stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                                                <path stroke-linecap="round" stroke-linejoin="round"
+                                                    d="m19.5 8.25-7.5 7.5-7.5-7.5" />
+                                            </svg>
+                                        </div>
+                                    </div>
+                                    <p class="col-span-7 lg:col-span-9">Pindah focus ke element selanjutnya dan focus
+                                        akan berputar</p>
+                                </div>
+                                <div class="grid grid-cols-12 my-1 gap-x-2 hover:bg-gray-100">
+                                    <div class="flex items-start col-span-5 lg:col-span-3 gap-x-1">
+                                        <div class="px-2 border-2 rounded border-slate-500 w-fit">
+                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                                stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                                                <path stroke-linecap="round" stroke-linejoin="round"
+                                                    d="M15.75 19.5 8.25 12l7.5-7.5" />
+                                            </svg>
+                                        </div>
+                                    </div>
+                                    <p class="col-span-7 lg:col-span-9">Jika quantity nya 1,
+                                        pintasan ini akan membatalkan produk. Tapi jika lebih, pintasan ini akan
+                                        mengurangi 1 quantity</p>
+                                </div>
+                                <div class="grid grid-cols-12 my-1 gap-x-2 hover:bg-gray-100">
+                                    <div class="flex items-start col-span-5 lg:col-span-3 gap-x-1">
+                                        <div class="px-2 border-2 rounded border-slate-500 w-fit">
+                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                                stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                                                <path stroke-linecap="round" stroke-linejoin="round"
+                                                    d="m8.25 4.5 7.5 7.5-7.5 7.5" />
+                                            </svg>
+                                        </div>
+                                    </div>
+                                    <p class="col-span-7 lg:col-span-9">Menambah 1 quantity.</p>
+                                </div>
+                                <div class="grid grid-cols-12 my-1 gap-x-2 hover:bg-gray-100">
+                                    <div class="flex items-start col-span-5 lg:col-span-3 gap-x-1">
+                                        <div class="px-2 border-2 rounded border-slate-500 w-fit">Ctrl</div>
+                                        <div class="px-2 border-2 rounded border-slate-500 w-fit">
+                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                                stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                                                <path stroke-linecap="round" stroke-linejoin="round"
+                                                    d="m19.5 8.25-7.5 7.5-7.5-7.5" />
+                                            </svg>
+                                        </div>
+                                    </div>
+                                    <p class="col-span-7 lg:col-span-9">Pindah focus ke element terakhir</p>
+                                </div>
+                                <div class="text-base">
+                                    <div class="grid grid-cols-12 my-1 gap-x-2 hover:bg-gray-100">
+                                        <div class="flex items-start col-span-5 lg:col-span-3 gap-x-1">
+                                            <div class="px-2 border-2 rounded border-slate-500 w-fit">Delete</div>
+                                        </div>
+                                        <p class="col-span-7 lg:col-span-9">Membatalkan order</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Order List -->
+                <div class="flex-1">
+                    <!-- Struk -->
+                    <div x-show="selectedProducts.length" class="flex items-center justify-center w-full bg-gray-200">
+                        <div class="px-6 pt-8 my-5 rounded shadow-lg w-80 bg-gray-50">
+                            <img src="logo.png" alt="chippz" class="w-16 py-4 mx-auto" />
+                            <div class="flex flex-col items-center justify-center gap-2 text-center">
+                                <h4 class="font-semibold md:text-xl" x-text="profile.shopName"></h4>
+                                <p class="text-xs md:text-sm" x-text="profile.address"></p>
+                            </div>
+                            <div class="flex flex-col py-6 text-xs gap-y-0.5 border-b md:text-sm">
+                                <p class="flex justify-between">
+                                    <span class="text-gray-400">No Struk:</span>
+                                    <span x-text="Math.floor(Math.random() * 100000000000) + 1;"></span>
+                                </p>
+                                <p class="flex justify-between">
+                                    <span class="text-gray-400">Tanggal:</span>
+                                    <span x-text="time"></span>
+                                </p>
+                                <p class="flex justify-between">
+                                    <span class="text-gray-400">Kasir:</span>
+                                    <span x-text="profile.cashierName"></span>
+                                </p>
+                            </div>
+                            <!-- List order -->
+                            <div class="flex flex-col gap-3 pt-2 pb-6 text-xs md:text-sm">
+                                <div class="space-y-2" x-ref="ordered" @keyup.down="$focus.wrap().next()"
+                                    @keyup.up="$focus.wrap().previous()" @keyup.ctrl.down="$focus.last()">
+                                    <div class="flex items-center justify-between font-bold">
+                                        <div>Produk</div>
+                                        <div>Total</div>
+                                    </div>
+                                    <template x-for="(product, index) in orderedProducts" :key="index">
+                                        <div class="flex items-center justify-between py-1 cursor-pointer focus:outline-emerald-500"
+                                            @focus="filterByKeyword = product.name" @keyup.right="product.quantity++"
+                                            @keyup.left="product.quantity > 1 ? product.quantity-- : unSelectProduct(product.id);"
+                                            @keyup.delete="unSelectProduct(product.id)" tabindex="0"
+                                            @click="filterByKeyword = product.name">
+                                            <div class="flex-1">
+                                                <div><span x-text="product.name"></span> /<span
+                                                        x-text="product.unit"></span></div>
+                                                <div>
+                                                    <span x-text="formatRupiah(product.price)"></span> x <span
+                                                        x-text="product.quantity"></span>
+                                                </div>
+                                            </div>
+                                            <div class="min-w-[44px] text-right"
+                                                x-text="formatRupiah(product.totalPrice)"></div>
+                                        </div>
+                                    </template>
+                                </div>
+                                <div class="space-y-2">
+                                    <div class="flex items-center justify-between font-bold">
+                                        <div>Total</div>
+                                        <div x-text="formatRupiah(totalPrice)"></div>
+                                    </div>
+                                    <div class="flex items-center justify-between cursor-pointer" @click="isPay = true">
+                                        <div>Bayar</div>
+                                        <div x-text="formatRupiah(pay)"></div>
+                                    </div>
+                                    <div class="flex items-center justify-between">
+                                        <div>Kembali</div>
+                                        <div x-text="(change < 0) ? '-'+formatRupiah(change) : formatRupiah(change)">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="border border-b"></div>
+                                <div class="w-11/12 p-1 mx-auto text-center bg-gray-200 border">
+                                    <p x-text="profile.message"></p>
+                                </div>
+                                <div class="flex flex-col items-center justify-center gap-1 pb-4">
+                                    <p class="flex gap-2">
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                            stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
+                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                d="M21.75 6.75v10.5a2.25 2.25 0 0 1-2.25 2.25h-15a2.25 2.25 0 0 1-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25m19.5 0v.243a2.25 2.25 0 0 1-1.07 1.916l-7.5 4.615a2.25 2.25 0 0 1-2.36 0L3.32 8.91a2.25 2.25 0 0 1-1.07-1.916V6.75" />
+                                        </svg>
+                                        <span x-text="profile.emailAddress"></span>
+                                    </p>
+                                    <p class="flex gap-2">
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                            stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
+                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 0 0 2.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 0 1-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 0 0-1.091-.852H4.5A2.25 2.25 0 0 0 2.25 4.5v2.25Z" />
+                                        </svg>
+                                        <span x-text="profile.phoneNumber"></span>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Belum ada orderan -->
+                    <div x-show="!selectedProducts.length" class="flex flex-col items-center justify-center w-full">
+                        <img src="wait.png" alt="Waiting for order" class="max-h-72">
+                        <div class="flex flex-col items-center justify-center text-center sm:min-h-64 gap-y-5">
+                            <h1 class="text-6xl font-extrabold">204</h1>
+                            <div class="text-xl">Belum Ada Orderan</div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Bottom Nav -->
+                <div class="fixed inset-x-0 bottom-0">
+                    <div x-show="selectedProducts.length && isPay"
+                        class="flex items-center mx-auto gap-x-4 md:container sm:px-0 sm:justify-end">
+                        <div
+                            class="w-full px-4 py-2 space-y-1 border-t sm:border-0 bg-gray-50 sm:w-1/2 sm:pl-3 sm:pr-0">
+                            <input type="number" placeholder="Bayar" min="0" x-model="pay" @keyup.enter="isPay = false"
+                                class="w-full px-2 py-1 bg-white border outline-none selection:bg-emerald-100 md:min-h-11 min-h-10 border-emerald-500 rounded-xl">
+                            <div class="flex flex-wrap gap-1">
+                                <button @click="setPay(totalPrice)"
+                                    class="inline-flex items-center justify-center px-2 font-medium no-underline transition-colors duration-75 border shadow-sm rounded-3xl text-emerald-500 focus:outline-none focus-visible:ring border-emerald-600 hover:bg-emerald-600 hover:text-white active:bg-emerald-700 disabled:bg-emerald-700 focus-visible:ring-emerald-400 disabled:cursor-not-allowed">
+                                    Tunai
+                                </button>
+                                <template x-for="(change, index) in setChangeRecomendation" :key="index">
+                                    <button @click="setPay(change.amount)" x-text="change.name"
+                                        class="inline-flex items-center justify-center px-2 font-medium no-underline transition-colors duration-75 border shadow-sm rounded-3xl text-emerald-500 focus:outline-none focus-visible:ring border-emerald-600 hover:bg-emerald-600 hover:text-white active:bg-emerald-700 disabled:bg-emerald-700 focus-visible:ring-emerald-400 disabled:cursor-not-allowed">
+                                    </button>
+                                </template>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flex text-sm text-center border-y justify-evenly bg-emerald-100 border-emerald-300">
+                        <button :disabled="!selectedProducts.length"
+                            @click="if(confirm('Yakin mau membatalkan pesanan?')) cancelOrder()"
+                            :class="!selectedProducts.length ? 'text-gray-400 cursor-not-allowed' : 'md:hover:bg-emerald-200 md:active:bg-emerald-300'"
+                            class="flex flex-col items-center justify-center flex-1 px-0.5 py-2 gap-y-1 md:px-4 md:flex-initial">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                                stroke="currentColor" class="w-6 h-6">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
+                            </svg>
+                            <span class="hidden sm:block">Batalkan Pesanan</span>
+                        </button>
+                        <button @click="filterByKeyword = ''"
+                            :class="!filterByKeyword ? 'text-gray-400 cursor-not-allowed' : 'md:hover:bg-emerald-200 md:active:bg-emerald-300'"
+                            class="px-0.5 flex flex-col items-center justify-center flex-1 py-2 gap-y-1 md:px-4 md:flex-initial">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                                stroke="currentColor" class="w-6 h-6">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M3.98 8.223A10.477 10.477 0 0 0 1.934 12C3.226 16.338 7.244 19.5 12 19.5c.993 0 1.953-.138 2.863-.395M6.228 6.228A10.451 10.451 0 0 1 12 4.5c4.756 0 8.773 3.162 10.065 7.498a10.522 10.522 0 0 1-4.293 5.774M6.228 6.228 3 3m3.228 3.228 3.65 3.65m7.894 7.894L21 21m-3.228-3.228-3.65-3.65m0 0a3 3 0 1 0-4.243-4.243m4.242 4.242L9.88 9.88" />
+                            </svg>
+                            <span class="hidden sm:block">Hapus Pencarian</span>
+                        </button>
+                        <button @click="$focus.focus(searchOrder)"
+                            class="flex px-0.5 flex-col items-center justify-center flex-1 py-2 gap-y-1 md:hover:bg-emerald-200 md:active:bg-emerald-300 md:px-4 md:flex-initial">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                                stroke="currentColor" class="w-6 h-6">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
+                            </svg>
+                            <span class="hidden sm:block">Cari Produk</span>
+                        </button>
+                        <button :disabled="!selectedProducts.length"
+                            @click="if(confirm('Yakin mau menyelesaikan pesanan?')) finishOrder()"
+                            :class="!selectedProducts.length ? 'text-gray-400 cursor-not-allowed' : 'md:hover:bg-emerald-200 md:active:bg-emerald-300'"
+                            class="flex px-0.5 flex-col items-center justify-center flex-1 py-2 gap-y-1 md:px-4 md:flex-initial">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                                stroke="currentColor" class="w-6 h-6">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 6 6 9-13.5" />
+                            </svg>
+                            <span class="hidden sm:block">Selesaikan Pesanan</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Product -->
+            <div x-cloak x-data="product" x-show="isProduct" class="fixed inset-0 z-10 overflow-y-auto bg-gray-50">
+                <div class="space-y-4 md:container md:mx-auto">
+                    <!-- Title -->
+                    <div
+                        class="sticky top-0 z-10 flex items-center py-2 mb-4 border-b-2 shadow border-b-emerald-500 bg-emerald-100 gap-x-2">
+                        <button class="px-2 py-2 md:px-4" @click="isProduct = false">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5"
+                                stroke="currentColor" class="w-6 h-6">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" />
+                            </svg>
+                        </button>
+                        <h1 class="text-2xl font-semibold lg:text-3xl">Product</h1>
+                    </div>
+                    <!-- Form -->
+                    <div class="grid md:grid-cols-2 gap-y-4">
+                        <div class="row-span-2 px-4">
+                            <div class="flex items-center justify-between cursor-pointer gap-x-2"
+                                @click="isCreateProduct = !isCreateProduct">
+                                <h2 class="text-xl font-semibold lg:text-2xl">Form Tambah Produk</h2>
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
+                                    stroke="currentColor" class="w-6 h-6" x-show="!isCreateProduct">
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                        d="m8.25 4.5 7.5 7.5-7.5 7.5" />
+                                </svg>
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
+                                    stroke="currentColor" class="w-6 h-6" x-show="isCreateProduct">
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                        d="m19.5 8.25-7.5 7.5-7.5-7.5" />
+                                </svg>
+                            </div>
+                            <form @submit.prevent="createProduct()" x-trap="isCreateProduct" x-show="isCreateProduct"
+                                class="px-4 mt-2 bg-white border border-black rounded">
+                                <div class="my-2">
+                                    <label for="name" class="text-sm text-gray-700 lg:text-base">Nama Produk</label>
+                                    <input required type="text" id="name" x-model="formCreateProduct.name"
+                                        class="w-full min-h-[2.25rem] py-0 md:min-h-[2.5rem] border-b-2 font-medium focus:border-b-gray-800 border-b-gray-400 outline-0">
+                                </div>
+                                <div class="my-2">
+                                    <label for="description" class="text-sm text-gray-700 lg:text-base">Deskripsi
+                                        Produk</label>
+                                    <input required type="text" id="description" x-model="formCreateProduct.description"
+                                        class="w-full min-h-[2.25rem] py-0 md:min-h-[2.5rem] border-b-2 font-medium focus:border-b-gray-800 border-b-gray-400 outline-0">
+                                </div>
+                                <div class="my-2">
+                                    <label for="typeId" class="text-sm text-gray-700 lg:text-base">Type Produk</label>
+                                    <select name="typeId" id="typeId" required x-model="formCreateProduct.typeId"
+                                        class="w-full min-h-[2.25rem] py-0 md:min-h-[2.5rem] border-b-2 font-medium focus:border-b-gray-800 border-b-gray-400 outline-0">
+                                        <option selected class="hidden" value="">Pilih Tipe Product</option>
+                                        <template x-for="type in types">
+                                            <option :value="type.id" x-text="type.name"></option>
+                                        </template>
+                                    </select>
+                                </div>
+                                <div class="my-2">
+                                    <label for="unitId" class="text-sm text-gray-700 lg:text-base">Unit Produk</label>
+                                    <select name="unitId" id="unitId" required x-model="formCreateProduct.unitId"
+                                        class="w-full min-h-[2.25rem] py-0 md:min-h-[2.5rem] border-b-2 font-medium focus:border-b-gray-800 border-b-gray-400 outline-0">
+                                        <option selected class="hidden" value="">Pilih Unit Product</option>
+                                        <template x-for="unit in units">
+                                            <option :value="unit.id" x-text="unit.name"></option>
+                                        </template>
+                                    </select>
+                                </div>
+                                <div class="my-2">
+                                    <label for="price" class="text-sm text-gray-700 lg:text-base">Harga
+                                        Produk</label>
+                                    <input required type="number" id="price" x-model="formCreateProduct.price"
+                                        class="w-full min-h-[2.25rem] py-0 md:min-h-[2.5rem] border-b-2 font-medium focus:border-b-gray-800 border-b-gray-400 outline-0">
+                                </div>
+                                <div class="flex justify-end my-2">
+                                    <button type="submit"
+                                        class="min-h-[1.75rem] md:min-h-[2rem] border-emerald-600 text-xs md:text-sm inline-flex items-center px-2 bg-emerald-500 text-white py-1 font-medium border rounded-lg focus:outline-none focus-visible:ring hover:bg-emerald-600 active:bg-emerald-700">
+                                        Submit
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="row-span-1 px-4">
+                            <div class="flex items-center justify-between cursor-pointer gap-x-2"
+                                @click="isCreateType = !isCreateType">
+                                <h2 class="text-xl font-semibold lg:text-2xl">Form Tambah Type</h2>
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
+                                    stroke="currentColor" class="w-6 h-6" x-show="!isCreateType">
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                        d="m8.25 4.5 7.5 7.5-7.5 7.5" />
+                                </svg>
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
+                                    stroke="currentColor" class="w-6 h-6" x-show="isCreateType">
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                        d="m19.5 8.25-7.5 7.5-7.5-7.5" />
+                                </svg>
+                            </div>
+                            <form @submit.prevent="createType()" x-trap="isCreateType"
+                                class="px-4 mt-2 bg-white border border-black rounded" x-show="isCreateType">
+                                <div class="my-2">
+                                    <label for="name" class="text-sm text-gray-700 lg:text-base">Nama Type</label>
+                                    <input required type="text" id="name" x-model="formCreateType.name"
+                                        class="w-full min-h-[2.25rem] py-0 md:min-h-[2.5rem] border-b-2 font-medium focus:border-b-gray-800 border-b-gray-400 outline-0">
+                                </div>
+                                <div class="my-2">
+                                    <label for="description" class="text-sm text-gray-700 lg:text-base">Deskripsi
+                                        Type</label>
+                                    <input required type="text" id="description" x-model="formCreateType.description"
+                                        class="w-full min-h-[2.25rem] py-0 md:min-h-[2.5rem] border-b-2 font-medium focus:border-b-gray-800 border-b-gray-400 outline-0">
+                                </div>
+                                <div class="flex justify-end my-2">
+                                    <button type="submit"
+                                        class="min-h-[1.75rem] md:min-h-[2rem] border-emerald-600 text-xs md:text-sm inline-flex items-center px-2 bg-emerald-500 text-white py-1 font-medium border rounded-lg focus:outline-none focus-visible:ring hover:bg-emerald-600 active:bg-emerald-700">
+                                        Submit
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="row-span-1 px-4 ">
+                            <div class="flex items-center justify-between cursor-pointer gap-x-2"
+                                @click="isCreateUnit = !isCreateUnit">
+                                <h2 class="text-xl font-semibold lg:text-2xl">Form Tambah Unit</h2>
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
+                                    stroke="currentColor" class="w-6 h-6" x-show="!isCreateUnit">
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                        d="m8.25 4.5 7.5 7.5-7.5 7.5" />
+                                </svg>
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
+                                    stroke="currentColor" class="w-6 h-6" x-show="isCreateUnit">
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                        d="m19.5 8.25-7.5 7.5-7.5-7.5" />
+                                </svg>
+                            </div>
+                            <form @submit.prevent="createUnit()" class="px-4 mt-2 bg-white border border-black rounded"
+                                x-show="isCreateUnit" x-trap="isCreateUnit">
+                                <div class="my-2">
+                                    <label for="name" class="text-sm text-gray-700 lg:text-base">Nama Unit</label>
+                                    <input required type="text" id="name" x-model="formCreateUnit.name"
+                                        class="w-full min-h-[2.25rem] py-0 md:min-h-[2.5rem] border-b-2 font-medium focus:border-b-gray-800 border-b-gray-400 outline-0">
+                                </div>
+                                <div class="my-2">
+                                    <label for="singkatan" class="text-sm text-gray-700 lg:text-base">Singkatan</label>
+                                    <input required type="text" id="singkatan" x-model="formCreateUnit.shortName"
+                                        class="w-full min-h-[2.25rem] py-0 md:min-h-[2.5rem] border-b-2 font-medium focus:border-b-gray-800 border-b-gray-400 outline-0">
+                                </div>
+                                <div class="flex justify-end my-2">
+                                    <button type="submit"
+                                        class="min-h-[1.75rem] md:min-h-[2rem] border-emerald-600 text-xs md:text-sm inline-flex items-center px-2 bg-emerald-500 text-white py-1 font-medium border rounded-lg focus:outline-none focus-visible:ring hover:bg-emerald-600 active:bg-emerald-700">
+                                        Submit
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <!-- List -->
+                    <div class="px-4 space-y-4 border border-black rounded-t-3xl">
+                        <!-- Title & Action -->
+                        <div class="flex flex-col mt-4 md:items-center md:justify-between md:flex-row gap-x-4 gap-y-2">
+                            <div class="flex items-center flex-1 gap-x-2">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                    stroke-width="2.5" stroke="currentColor" class="w-6 h-6">
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                        d="m21 7.5-9-5.25L3 7.5m18 0-9 5.25m9-5.25v9l-9 5.25M3 7.5l9 5.25M3 7.5v9l9 5.25m0-9v9" />
+                                </svg>
+                                <h2 class="text-xl font-bold lg:text-2xl">List Produk</h2>
+                            </div>
+                            <!-- Action -->
+                            <div class="flex flex-1 gap-2">
+                                <input x-model="filterByKeyword" type="text"
+                                    class="flex-1 w-full px-2 py-1 bg-white border outline-none border-emerald-500 rounded-xl"
+                                    placeholder="Cari produk berdasarkan nama ...">
+                                <div class="relative" @mouseleave="isActionFilter = false"
+                                    @click.outside="isActionFilter = false" @click="isActionFilter = !isActionFilter">
+                                    <button
+                                        class="flex items-center justify-center gap-2 px-4 py-1 border rounded-md border-emerald-300 text-emerald-900 bg-emerald-100"
+                                        title="Filter Product" @click="">
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                            stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                d="M12 3c2.755 0 5.455.232 8.083.678.533.09.917.556.917 1.096v1.044a2.25 2.25 0 0 1-.659 1.591l-5.432 5.432a2.25 2.25 0 0 0-.659 1.591v2.927a2.25 2.25 0 0 1-1.244 2.013L9.75 21v-6.568a2.25 2.25 0 0 0-.659-1.591L3.659 7.409A2.25 2.25 0 0 1 3 5.818V4.774c0-.54.384-1.006.917-1.096A48.32 48.32 0 0 1 12 3Z" />
+                                        </svg>
+                                        <span class="hidden lg:inline">Filter</span>
+                                    </button>
+                                    <div class="absolute right-0 z-10 w-40 pt-2 shadow-md top-full"
+                                        x-show="isActionFilter">
+                                        <div
+                                            class="flex flex-col py-2 space-y-0.5 text-sm rounded-sm md:text-base bg-white border-2 border-emerald-100">
+                                            <button class="px-2 underline text-start hover:bg-emerald-100"
+                                                @click="filterByType = undefined">Semua</button>
+                                            <template x-for="(type, index) in types" :key="index">
+                                                <button class="px-2 text-start hover:bg-emerald-100"
+                                                    @click="filterByType = type.id" x-text="type.name"></button>
+                                            </template>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="relative" @click.outside="isActionOrder = false"
+                                    @mouseleave="isActionOrder = false" @click="isActionOrder = !isActionOrder">
+                                    <button
+                                        class="flex items-center justify-center gap-2 px-4 py-1 border rounded-md border-emerald-300 text-emerald-900 bg-emerald-100"
+                                        title="Order Product">
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                            stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                d="M3 4.5h14.25M3 9h9.75M3 13.5h9.75m4.5-4.5v12m0 0-3.75-3.75M17.25 21 21 17.25" />
+                                        </svg>
+                                        <span class="hidden lg:inline">Order</span>
+                                    </button>
+                                    <div class="absolute right-0 z-10 w-40 pt-2 shadow-md top-full"
+                                        x-show="isActionOrder">
+                                        <div
+                                            class="flex flex-col py-2 space-y-0.5 text-sm rounded-sm md:text-base bg-white border border-emerald-300">
+                                            <button class="px-2 text-start hover:bg-emerald-100"
+                                                @click="sortBy= 'name'">Name</button>
+                                            <button class="px-2 text-start hover:bg-emerald-100"
+                                                @click="sortBy= 'typeId'">Type</button>
+                                            <button class="px-2 text-start hover:bg-emerald-100"
+                                                @click="sortBy= 'unitId'">Unit</button>
+                                            <button class="px-2 text-start hover:bg-emerald-100"
+                                                @click="sortBy= 'price'">Price</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- List Product -->
+                        <div class="grid grid-cols-1 gap-2 pb-4 md:gap-4 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4">
+                            <template x-for="(product, index) in products" :key="index">
+                                <div class="relative">
+                                    <div @click="selectProduct(product.id)"
+                                        :class="product.id == selectedProduct.id ? 'border-emerald-500 shadow bg-white' : 'border-gray-800 '"
+                                        class="flex items-start p-2 border cursor-pointer gap-y-2 gap-x-3 rounded-2xl">
+                                        <div class="p-1 mt-2 border border-gray-700 rounded-xl">
+                                            <template x-for="type in types">
+                                                <template x-if="product.typeId == type.id">
+                                                    <img :src="'icon/' + type.icon" :alt="type.name" class="max-w-6">
+                                                </template>
+                                            </template>
+                                        </div>
+                                        <div class="flex flex-col justify-between w-full h-full">
+                                            <div class="flex text-lg font-semibold gap-x-1 lg:text-xl">
+                                                <h3 x-text="product.name"></h3>
+                                                <div class="flex">
+                                                    <span>/</span>
+                                                    <template x-for="unit in units">
+                                                        <template x-if="product.unitId == unit.id">
+                                                            <span x-text="unit.shortName"></span>
+                                                        </template>
+                                                    </template>
+                                                </div>
+                                            </div>
+                                            <p class="text-base font-medium lg:text-lg" x-text="product.price"></p>
+                                        </div>
+                                    </div>
+                                    <div class="absolute flex bottom-1 right-1"
+                                        x-show="product.id == selectedProduct.id">
+                                        <button class="p-1 rounded-lg hover:bg-emerald-100"
+                                            @click="deleteProduct(product.id)">
+                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                                stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+                                                <path stroke-linecap="round" stroke-linejoin="round"
+                                                    d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" />
+                                            </svg>
+                                        </button>
+                                        <button @click="isModalEdit = true" class="p-1 rounded-lg hover:bg-emerald-100">
+                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                                stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+                                                <path stroke-linecap="round" stroke-linejoin="round"
+                                                    d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10" />
+                                            </svg>
+                                        </button>
+                                    </div>
+                                </div>
+                            </template>
+                        </div>
+                        <!-- Modal -->
+                        <div x-show="isModalEdit" x-transition x-cloak x-trap="isModalEdit"
+                            class="fixed top-0 left-0 right-0 z-50 flex items-center justify-center w-full h-screen bg-slate-800/80 md:mx-auto">
+                            <div class="w-full max-w-xl mx-4 overflow-hidden bg-white rounded-sm shadow"
+                                @click.outside="isModalEdit = false">
+                                <div class="flex justify-between px-4 py-2 bg-emerald-600">
+                                    <h2 class="text-xl font-semibold text-white lg:text-2xl">Edit Produk</h2>
+                                </div>
+                                <form @submit.prevent="isModalEdit = false" class="px-4">
+                                    <div class="my-2">
+                                        <label for="name" class="text-sm text-gray-700 lg:text-base">Nama Produk</label>
+                                        <input required type="text" id="name" x-model="selectedProduct.name"
+                                            class="selection:bg-emerald-100 w-full min-h-[2.25rem] py-0 md:min-h-[2.5rem] border-b-2 font-medium focus:border-b-gray-800 border-b-gray-400 outline-0">
+                                    </div>
+                                    <div class="my-2">
+                                        <label for="description" class="text-sm text-gray-700 lg:text-base">Deskripsi
+                                            Produk</label>
+                                        <input required type="text" id="description"
+                                            x-model="selectedProduct.description"
+                                            class="selection:bg-emerald-100 w-full min-h-[2.25rem] py-0 md:min-h-[2.5rem] border-b-2 font-medium focus:border-b-gray-800 border-b-gray-400 outline-0">
+                                    </div>
+                                    <div class="my-2">
+                                        <label for="typeId" class="text-sm text-gray-700 lg:text-base">Type
+                                            Produk</label>
+                                        <select name="typeId" id="typeId" required x-model="selectedProduct.typeId"
+                                            class="w-full min-h-[2.25rem] py-0 md:min-h-[2.5rem] border-b-2 font-medium focus:border-b-gray-800 border-b-gray-400 outline-0">
+                                            <option selected class="hidden" value="">Pilih Tipe Product</option>
+                                            <template x-for="type in types">
+                                                <option :value="type.id" x-text="type.name"></option>
+                                            </template>
+                                        </select>
+                                    </div>
+                                    <div class="my-2">
+                                        <label for="unitId" class="text-sm text-gray-700 lg:text-base">Unit
+                                            Produk</label>
+                                        <select name="unitId" id="unitId" required x-model="selectedProduct.unitId"
+                                            class="w-full min-h-[2.25rem] py-0 md:min-h-[2.5rem] border-b-2 font-medium focus:border-b-gray-800 border-b-gray-400 outline-0">
+                                            <option selected class="hidden" value="">Pilih Unit Product</option>
+                                            <template x-for="unit in units">
+                                                <option :value="unit.id" x-text="unit.name"></option>
+                                            </template>
+                                        </select>
+                                    </div>
+                                    <div class="my-2">
+                                        <label for="price"
+                                            class="text-sm text-gray-700 selection:bg-emerald-100 lg:text-base">Harga
+                                            Produk</label>
+                                        <input required type="number" min="0" id="price" x-model="selectedProduct.price"
+                                            class="selection:bg-emerald-100 w-full min-h-[2.25rem] py-0 md:min-h-[2.5rem] border-b-2 font-medium focus:border-b-gray-800 border-b-gray-400 outline-0">
+                                    </div>
+                                    <div class="flex justify-end my-2">
+                                        <button type="submit"
+                                            class="min-h-[1.75rem] md:min-h-[2rem] border-emerald-600 text-xs md:text-sm inline-flex items-center px-2 bg-emerald-500 text-white py-1 font-medium border rounded-lg focus:outline-none focus-visible:ring hover:bg-emerald-600 active:bg-emerald-700">
+                                            Submit
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Local Storage -->
+    <div x-data="storage" x-show="isStorage" x-transition x-cloak
+        class="fixed inset-0 z-50 flex items-center justify-center w-full bg-slate-800/80 md:mx-auto">
+        <div class="w-full max-w-xl mx-4 overflow-hidden rounded-sm shadow bg-gray-50"
+            @click.outside="isStorage = false">
+            <div class="flex justify-between px-4 py-2 bg-emerald-600">
+                <h2 class="text-xl font-semibold text-white lg:text-2xl">Export/Import Data</h2>
+            </div>
+            <div class="flex flex-col px-4 my-4 gap-y-2">
+                <textarea name="localData" id="localData" rows="10" x-model="localData"
+                    class="w-full p-1 border border-emerald-500 caret-emerald-500 focus:outline-none"
+                    placeholder="Tempel datamu kesini untuk meng-import data"></textarea>
+                <div class="flex items-center justify-between">
+                    <button @click="exportData()"
+                        class="px-2 py-1 text-white bg-gray-500 border border-gray-400 rounded-lg hover:bg-gray-600 active:bg-gray-700">Export</button>
+                    <button @click="importData()"
+                        class="px-2 py-1 text-white border rounded-lg border-emerald-400 bg-emerald-500 hover:bg-emerald-600 active:bg-emerald-700">Import</button>
+                </div>
+                <p class="text-sm leading-tight md:text-base">
+                    Perlu diperhatikan! Karena sistem ini menggunakan localStorage, maka proses export/import data
+                    hanya melalui copy/paste data. Jadi setelah klik export, sebaiknya buat file txt lalu paste datamu.
+                </p>
+            </div>
+        </div>
+    </div>
+    <!-- Toast -->
+    <div class="fixed z-10 inline-flex max-w-sm overflow-hidden text-gray-800 bg-white border rounded-lg shadow-md dark:bg-gray-950 dark:text-gray-100 top-14 right-4 sm:w-1/2"
+        role="alert" x-show="isShow" x-transition.opacity.out.duration.500ms x-cloak x-data="toast">
+        <div class="flex items-center justify-center w-12 pb-1" :class="data.bgStyle">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
+                class="w-6 h-6 text-white fill-current">
+                <path fill-rule="evenodd"
+                    d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12zm13.36-1.814a.75.75 0 10-1.22-.872l-3.236 4.53L9.53 12.22a.75.75 0 00-1.06 1.06l2.25 2.25a.75.75 0 001.14-.094l3.75-5.25z"
+                    clip-rule="evenodd" />
+            </svg>
+        </div>
+        <div class="flex-1 px-4 pt-2 pb-3">
+            <span class="font-semibold capitalize" :class="data.textStyle" x-text="data.status"></span>
+            <p class="text-sm" x-text="data.message"></p>
+        </div>
+        <div class="absolute bottom-0 left-0 right-0 w-full h-1 bg-gray-100 group">
+            <span class="absolute top-0 bottom-0 left-0 w-full h-full animate-progress" :class="data.bgStyle"></span>
+        </div>
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,5 @@
+Hanca adalah kata lain dari PR, atau lebih tepatnya pekerjaan yg tertunda
+- Icon pada Type
+- manfaatkan plugin focus pada laman product
+- tambahkan card tips bagi mobile / desktop
+- x-teleport
