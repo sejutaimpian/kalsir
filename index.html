@@ -173,6 +173,7 @@
             <!-- Order / Main Page -->
             <div x-cloak x-data="order" @keyup.escape.window="filterByKeyword= ''"
                 @keyup.ctrl.c.window="selectedProducts.length ? cancelOrder() : ''"
+                @keyup.h.window="isShortcut = !isShortcut"
                 @keyup.ctrl.enter.window="selectedProducts.length ? finishOrder() : ''"
                 @keyup.ctrl.space.window="selectedProducts.length ? isPay = !isPay : ''"
                 @keyup.slash.window="$focus.focus(searchOrder)" class="flex flex-col gap-4 mt-2 mb-28 sm:flex-row">
@@ -299,7 +300,7 @@
                             <div class="flex items-center gap-x-2">
                                 <div class="mb-1 text-lg font-bold">Window</div>
                                 <p class="text-sm font-normal text-gray-500">
-                                    Keadaan focus sedang tidak focus pada element apapun
+                                    Keadaan sedang tidak focus pada element apapun
                                 </p>
                             </div>
                             <div class="text-base">
@@ -347,6 +348,14 @@
                                     <p class="col-span-7 lg:col-span-9">
                                         Saat ada produk diorder, pintasan ini akan menampilkan / menyembunyikan Inputan
                                         Bayar
+                                    </p>
+                                </div>
+                                <div class="grid grid-cols-12 my-1 gap-x-2 hover:bg-gray-100">
+                                    <div class="flex items-start col-span-5 lg:col-span-3 gap-x-1">
+                                        <div class="px-2 border-2 rounded border-slate-500 w-fit">H</div>
+                                    </div>
+                                    <p class="col-span-7 lg:col-span-9">
+                                        Menampilkan / menyembunyikan Shortcut
                                     </p>
                                 </div>
                             </div>

@@ -120,6 +120,9 @@ document.addEventListener("alpine:init", () => {
       get isShortcut() {
         return Alpine.store("global").isShortcut;
       },
+      set isShortcut(param) {
+        Alpine.store("global").isShortcut = param;
+      },
       orderedProducts: [],
       get page() {
         return Alpine.store("global").page;
@@ -440,19 +443,24 @@ document.addEventListener("alpine:init", () => {
       this.localData = "";
     },
     importData() {
-      data = JSON.parse(this.localData);
       // Proses import masih manual karena mengutamakan reaktivity AlpineJS.
       // Jadi setiap kali ada state $persist baru, ia harus ditambahkan manual ke importData()
       // Tolong dibantu
-      this.isShortcut = JSON.parse(data.isShortcut);
-      this.profile = JSON.parse(data.profile);
-      this.products = JSON.parse(data.products);
-      this.sortBy = JSON.parse(data.sortBy);
-      this.types = JSON.parse(data.types);
-      this.units = JSON.parse(data.units);
-      this.isStorage = false;
-      this.localData = "";
-      this.setToast("success", "Berhasil Import Data");
+      try {
+        data = JSON.parse(this.localData);
+        this.isShortcut = JSON.parse(data.isShortcut);
+        this.profile = JSON.parse(data.profile);
+        this.products = JSON.parse(data.products);
+        this.sortBy = JSON.parse(data.sortBy);
+        this.types = JSON.parse(data.types);
+        this.units = JSON.parse(data.units);
+        this.setToast("success", "Berhasil Import Data");
+      } catch (e) {
+        this.setToast("danger", "Data tidak sesuai format");
+      } finally {
+        this.isStorage = false;
+        this.localData = "";
+      }
     },
     isShortcut: Alpine.$persist(false).as("isShortcut"),
     isStorage: false,
