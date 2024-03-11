@@ -582,7 +582,7 @@ document.addEventListener("alpine:init", () => {
         this.localData = "";
       }
     },
-    isShortcut: Alpine.$persist(false).as("isShortcut"),
+    isShortcut: Alpine.$persist(true).as("isShortcut"),
     isStorage: false,
     localData: "",
 
