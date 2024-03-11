@@ -72,6 +72,10 @@ document.addEventListener("alpine:init", () => {
       ],
       filterByKeyword: "",
       finishOrder() {
+        if (this.pay < this.totalPrice) {
+          Alpine.store("global").setToast("warning", "Uang bayar tidak cukup");
+          return;
+        }
         this.orderedProducts = [];
         this.selectedProducts = [];
         this.pay = 0;

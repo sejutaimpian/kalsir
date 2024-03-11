@@ -719,9 +719,9 @@
                             </svg>
                             <span class="hidden sm:block">Cari Produk</span>
                         </button>
-                        <button :disabled="!selectedProducts.length"
+                        <button :disabled="!selectedProducts.length || totalPrice > pay"
                             @click="if(confirm('Yakin mau menyelesaikan pesanan?')) finishOrder()"
-                            :class="!selectedProducts.length ? 'text-gray-400 cursor-not-allowed' : 'md:hover:bg-emerald-200 md:active:bg-emerald-300'"
+                            :class="(!selectedProducts.length || totalPrice > pay) ? 'text-gray-400 cursor-not-allowed' : 'md:hover:bg-emerald-200 md:active:bg-emerald-300'"
                             class="flex px-0.5 flex-col items-center justify-center flex-1 py-2 gap-y-1 md:px-4 md:flex-initial">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                                 stroke="currentColor" class="w-6 h-6">
