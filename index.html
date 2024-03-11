@@ -180,14 +180,15 @@
                 <!-- Search & Order Product -->
                 <div class="sticky top-0 flex-1 px-4 bg-gray-50">
                     <!-- Input Search Product -->
-                    <div class="relative pt-2">
+                    <div class="relative mt-2">
                         <input x-model="filterByKeyword" type="text" id="searchOrder" x-ref="searchInput"
                             @keyup.enter="$el.blur()" autocomplete="off"
                             :class="!products.length && filterByKeyword ? 'border-red-500' : ''"
                             class="flex-1 w-full px-2 py-1 bg-white border outline-none selection:bg-emerald-100 md:min-h-11 min-h-10 border-emerald-500 rounded-xl"
                             placeholder="Cari produk berdasarkan nama ...">
-                        <button tabindex="-1" x-show="filterByKeyword" @click="filterByKeyword = ''"
-                            title="Hapus pencarian" class="absolute inset-y-0 right-0 px-2 rounded-r-xl">
+                        <button tabindex="-1" x-show="filterByKeyword"
+                            @click="filterByKeyword = ''; $focus.focus(searchOrder)" title="Hapus pencarian"
+                            class="absolute inset-y-0 right-0 px-2 rounded-r-xl">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                                 stroke="currentColor" class="w-5 h-5 md:w-6 md:h-6">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
