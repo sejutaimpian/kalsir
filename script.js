@@ -98,23 +98,8 @@ document.addEventListener("alpine:init", () => {
       },
       /* Fungsi formatRupiah */
       formatRupiah(angka, prefix) {
-        var number_string = angka
-            .toString()
-            .replace(/[^,\d]/g, "")
-            .toString(),
-          split = number_string.split(","),
-          sisa = split[0].length % 3,
-          rupiah = split[0].substr(0, sisa),
-          ribuan = split[0].substr(sisa).match(/\d{3}/gi);
-
-        // tambahkan titik jika yang di input sudah menjadi angka ribuan
-        if (ribuan) {
-          separator = sisa ? "." : "";
-          rupiah += separator + ribuan.join(".");
-        }
-
-        rupiah = split[1] != undefined ? rupiah + "," + split[1] : rupiah;
-        return prefix == undefined ? rupiah : rupiah ? "Rp. " + rupiah : "";
+        // memanggil function yg mereturn data harus diawali return
+        return Alpine.store("global").formatRupiah(angka, prefix);
       },
       isPay: false,
       get isShortcut() {
@@ -124,9 +109,6 @@ document.addEventListener("alpine:init", () => {
         Alpine.store("global").isShortcut = param;
       },
       orderedProducts: [],
-      get page() {
-        return Alpine.store("global").page;
-      },
       pay: 0,
       get products() {
         let products = Alpine.store("global").products;
@@ -246,8 +228,22 @@ document.addEventListener("alpine:init", () => {
         Alpine.store("global").deleteProduct(id);
         Alpine.store("global").setToast("success", "Berhasil menghapus produk");
       },
-      filterByKeyword: undefined,
+      deleteType(id) {
+        Alpine.store("global").deleteType(id);
+        Alpine.store("global").setToast("success", "Berhasil menghapus type");
+      },
+      deleteUnit(id) {
+        Alpine.store("global").deleteUnit(id);
+        Alpine.store("global").setToast("success", "Berhasil menghapus unit");
+      },
+      filterProductByKeyword: undefined,
+      filterTypeByKeyword: undefined,
+      filterUnitByKeyword: undefined,
       filterByType: undefined,
+      formatRupiah(angka, prefix) {
+        // memanggil function yg mereturn data harus diawali return
+        return Alpine.store("global").formatRupiah(angka, prefix);
+      },
       formCreateProduct: {
         id: undefined,
         name: undefined,
@@ -267,17 +263,85 @@ document.addEventListener("alpine:init", () => {
         name: undefined,
         shortName: undefined,
       },
+      icons: [
+        "attack.png",
+        "bangunan.png",
+        "barbershop.png",
+        "battery.png",
+        "binocular.png",
+        "bonds.png",
+        "cangkir.png",
+        "climbing-wall.png",
+        "diamond.png",
+        "dumbbell.png",
+        "earbud.png",
+        "eid-mubarok.png",
+        "energy-drink.png",
+        "french-fries.png",
+        "game-controller.png",
+        "gear.png",
+        "hand-holding-heart.png",
+        "hockey-skates.png",
+        "iphone-se.png",
+        "jajanan.png",
+        "jet.png",
+        "keranjang.png",
+        "kopi.png",
+        "love.png",
+        "machete.png",
+        "magnetic-card.png",
+        "medal.png",
+        "micro-sd.png",
+        "minuman.png",
+        "nfc.png",
+        "paint-roller.png",
+        "pakaian.png",
+        "petani.png",
+        "pill.png",
+        "playstation-buttons.png",
+        "puzzle.png",
+        "rokok.png",
+        "roller-skates.png",
+        "ruma.png",
+        "salon.png",
+        "sekola.png",
+        "sembako.png",
+        "shield.png",
+        "shotgun.png",
+        "sim-card.png",
+        "skull.png",
+        "smartphone.png",
+        "sofa.png",
+        "sparkling.png",
+        "star.png",
+        "stethoscope.png",
+        "support.png",
+        "tank.png",
+        "trainers.png",
+        "tricycle.png",
+        "trophy.png",
+        "undefined.png",
+        "us-dollar.png",
+        "volleyball.png",
+        "watches.png",
+        "water-polo-ball.png",
+      ],
       isActionFilter: false,
       isActionOrder: false,
       isCreateProduct: false,
       isCreateType: false,
       isCreateUnit: false,
-      isModalEdit: false,
+      isModalEditProduct: false,
+      isModalEditType: false,
+      isModalEditUnit: false,
       get isProduct() {
         return Alpine.store("global").isProduct;
       },
       set isProduct(param) {
         Alpine.store("global").isProduct = param;
+      },
+      otherPages() {
+        return this.pages.filter((page) => page != this.page);
       },
       get products() {
         let products = Alpine.store("global").products;
@@ -286,11 +350,11 @@ document.addEventListener("alpine:init", () => {
             (product) => product.typeId == this.filterByType
           );
         }
-        if (this.filterByKeyword) {
+        if (this.filterProductByKeyword) {
           products = products.filter((product) =>
             product.name
               .toLowerCase()
-              .includes(this.filterByKeyword.toLowerCase())
+              .includes(this.filterProductByKeyword.toLowerCase())
           );
         }
         if (this.sortBy) {
@@ -319,6 +383,8 @@ document.addEventListener("alpine:init", () => {
         }
         return products;
       },
+      page: "product",
+      pages: ["product", "type", "unit"],
       resetFormCreateProduct() {
         this.formCreateProduct = {
           id: undefined,
@@ -345,6 +411,8 @@ document.addEventListener("alpine:init", () => {
         };
       },
       selectedProduct: {},
+      selectedType: {},
+      selectedUnit: {},
       selectProduct(id) {
         if (this.selectedProduct.id == id) {
           this.selectedProduct = {};
@@ -354,12 +422,64 @@ document.addEventListener("alpine:init", () => {
           (product) => product.id == id
         );
       },
+      selectType(id) {
+        if (this.selectedType.id == id) {
+          this.selectedType = {};
+          return;
+        }
+        this.selectedType = this.types.find((type) => type.id == id);
+      },
+      selectUnit(id) {
+        if (this.selectedUnit.id == id) {
+          this.selectedUnit = {};
+          return;
+        }
+        this.selectedUnit = this.units.find((unit) => unit.id == id);
+      },
       sortBy: Alpine.$persist("").as("sortBy"), // name or typeId or unitId or price
       get types() {
-        return Alpine.store("global").types;
+        let types = Alpine.store("global").types;
+        if (this.filterTypeByKeyword) {
+          types = types.filter((type) =>
+            type.name
+              .toLowerCase()
+              .includes(this.filterTypeByKeyword.toLowerCase())
+          );
+        }
+        types = types.toSorted((a, b) => {
+          let fa = a.name.toLowerCase(),
+            fb = b.name.toLowerCase();
+          if (fa < fb) {
+            return -1;
+          }
+          if (fa > fb) {
+            return 1;
+          }
+          return 0;
+        });
+        return types;
       },
       get units() {
-        return Alpine.store("global").units;
+        let units = Alpine.store("global").units;
+        if (this.filterUnitByKeyword) {
+          units = units.filter((unit) =>
+            unit.name
+              .toLowerCase()
+              .includes(this.filterUnitByKeyword.toLowerCase())
+          );
+        }
+        units = units.toSorted((a, b) => {
+          let fa = a.name.toLowerCase(),
+            fb = b.name.toLowerCase();
+          if (fa < fb) {
+            return -1;
+          }
+          if (fa > fb) {
+            return 1;
+          }
+          return 0;
+        });
+        return units;
       },
     };
   });
@@ -487,6 +607,32 @@ document.addEventListener("alpine:init", () => {
     },
     deleteProduct(id) {
       this.products = this.products.filter((product) => product.id != id);
+    },
+    deleteType(id) {
+      this.types = this.types.filter((type) => type.id != id);
+    },
+    deleteUnit(id) {
+      this.units = this.units.filter((unit) => unit.id != id);
+    },
+    /* Fungsi formatRupiah */
+    formatRupiah(angka, prefix) {
+      var number_string = angka
+          .toString()
+          .replace(/[^,\d]/g, "")
+          .toString(),
+        split = number_string.split(","),
+        sisa = split[0].length % 3,
+        rupiah = split[0].substr(0, sisa),
+        ribuan = split[0].substr(sisa).match(/\d{3}/gi);
+
+      // tambahkan titik jika yang di input sudah menjadi angka ribuan
+      if (ribuan) {
+        separator = sisa ? "." : "";
+        rupiah += separator + ribuan.join(".");
+      }
+
+      rupiah = split[1] != undefined ? rupiah + "," + split[1] : rupiah;
+      return prefix == undefined ? rupiah : rupiah ? "Rp. " + rupiah : "";
     },
     isProduct: false,
     products: Alpine.$persist([
