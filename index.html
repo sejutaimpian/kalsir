@@ -1011,7 +1011,7 @@
                                 <div class="col-span-full">
                                     <label for="icon" class="text-sm text-gray-700 lg:text-base">Icon
                                         Type</label>
-                                    <div class="flex flex-wrap gap-2">
+                                    <div class="flex flex-row gap-1 overflow-x-scroll no-scrollbar">
                                         <template x-for="(icon, index) in icons" :key="index">
                                             <img :src="'icon/' + icon" :alt="icon"
                                                 @click="formCreateType.icon == icon ? formCreateType.icon = '' : formCreateType.icon = icon"
