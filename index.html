@@ -178,9 +178,9 @@
                 @keyup.ctrl.space.window="selectedProducts.length ? isPay = !isPay : ''"
                 @keyup.slash.window="$focus.focus(searchOrder)" class="flex flex-col gap-4 mt-2 mb-28 sm:flex-row">
                 <!-- Search & Order Product -->
-                <div class="relative flex-1 mx-4 md:mx-0">
+                <div class="sticky top-0 flex-1 px-4 bg-gray-50">
                     <!-- Input Search Product -->
-                    <div class="relative mt-2">
+                    <div class="relative pt-2">
                         <input x-model="filterByKeyword" type="text" id="searchOrder" x-ref="searchInput"
                             @keyup.enter="$el.blur()" autocomplete="off"
                             :class="!products.length && filterByKeyword ? 'border-red-500' : ''"
@@ -195,7 +195,7 @@
                         </button>
                     </div>
                     <!-- Product List -->
-                    <div class="absolute inset-x-0 bg-gray-100 sm:static max-h-[70vh] sm:max-h-max overflow-y-auto"
+                    <div class="absolute inset-x-0 bg-gray-100 sm:static max-h-[65vh] sm:max-h-max overflow-y-auto"
                         x-ref="searchList" @keyup.down="$focus.wrap().next()" @keyup.up="$focus.wrap().previous()"
                         @keyup.ctrl.down="$focus.last()">
                         <template x-for="(product, index) in products" :key="index">
@@ -1011,7 +1011,7 @@
                                 <div class="col-span-full">
                                     <label for="icon" class="text-sm text-gray-700 lg:text-base">Icon
                                         Type</label>
-                                    <div class="flex flex-row gap-1 overflow-x-scroll no-scrollbar">
+                                    <div class="flex flex-row gap-1 overflow-x-scroll md:flex-wrap no-scrollbar">
                                         <template x-for="(icon, index) in icons" :key="index">
                                             <img :src="'icon/' + icon" :alt="icon"
                                                 @click="formCreateType.icon == icon ? formCreateType.icon = '' : formCreateType.icon = icon"
