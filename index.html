@@ -664,9 +664,18 @@
                     <div x-show="selectedProducts.length && isPay"
                         class="flex items-center mx-auto gap-x-4 md:container sm:px-0 sm:justify-end">
                         <div
-                            class="w-full px-4 py-2 space-y-1 border-t sm:border-0 bg-gray-50 sm:w-1/2 sm:pl-3 sm:pr-0">
-                            <input type="number" placeholder="Bayar" min="0" x-model="pay" @keyup.enter="isPay = false"
-                                class="w-full px-2 py-1 bg-white border outline-none selection:bg-emerald-100 md:min-h-11 min-h-10 border-emerald-500 rounded-xl">
+                            class="w-full px-4 py-2 space-y-1 border-t sm:border-0 bg-gray-50 sm:w-1/2 sm:pl-6 sm:pr-0">
+                            <div class="flex items-center justify-between gap-x-2">
+                                <input type="number" placeholder="Bayar" min="0" x-model="pay"
+                                    @keyup.enter="isPay = false"
+                                    class="w-full px-2 py-1 bg-white border outline-none selection:bg-emerald-100 md:min-h-11 min-h-10 border-emerald-500 rounded-xl">
+                                <button @click="isPay = false">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                        stroke-width="1.5" stroke="currentColor" class="size-6 md:size-8">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
+                                    </svg>
+                                </button>
+                            </div>
                             <div class="flex flex-wrap gap-1">
                                 <button @click="setPay(totalPrice)"
                                     class="inline-flex items-center justify-center px-2 font-medium no-underline transition-colors duration-75 border shadow-sm rounded-3xl text-emerald-500 focus:outline-none focus-visible:ring border-emerald-600 hover:bg-emerald-600 hover:text-white active:bg-emerald-700 disabled:bg-emerald-700 focus-visible:ring-emerald-400 disabled:cursor-not-allowed">
