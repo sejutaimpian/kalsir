@@ -5,30 +5,16 @@ document.addEventListener("alpine:init", () => {
         setInterval(() => {
           this.time = new Date().toLocaleString();
         }, 1000);
+        this.noStruk = Math.floor(Math.random() * 100000000000) + 1;
       },
 
-      setQuantity(id, operation) {
-        if (operation === "+") {
-          this.orderedProducts.find((product) => product.id == id).quantity++;
-        } else if (operation === "-") {
-          if (
-            this.orderedProducts.find((product) => product.id == id).quantity >
-            1
-          ) {
-            this.orderedProducts.find((product) => product.id == id).quantity--;
-          } else {
-            this.unSelectProduct(id);
-          }
-        } else {
-          console.error("Operasi tidak dikenali");
-        }
-      },
       cancelOrder() {
         this.orderedProducts = [];
         this.selectedProducts = [];
         this.pay = 0;
         this.isPay = false;
         this.filterByKeyword = "";
+        this.noStruk = Math.floor(Math.random() * 100000000000) + 1;
         Alpine.store("global").setToast("info", "Orderan berhasil dibatalkan");
       },
       get change() {
@@ -91,6 +77,7 @@ document.addEventListener("alpine:init", () => {
         this.pay = 0;
         this.isPay = false;
         this.filterByKeyword = "";
+        this.noStruk = Math.floor(Math.random() * 100000000000) + 1;
         Alpine.store("global").setToast(
           "success",
           "Orderan berhasil diselesaikan"
@@ -108,6 +95,7 @@ document.addEventListener("alpine:init", () => {
       set isShortcut(param) {
         Alpine.store("global").isShortcut = param;
       },
+      noStruk: 0,
       orderedProducts: [],
       pay: 0,
       get products() {
@@ -168,6 +156,22 @@ document.addEventListener("alpine:init", () => {
         this.pay = amount;
         this.filterByKeyword = "";
         this.isPay = false;
+      },
+      setQuantity(id, operation) {
+        if (operation === "+") {
+          this.orderedProducts.find((product) => product.id == id).quantity++;
+        } else if (operation === "-") {
+          if (
+            this.orderedProducts.find((product) => product.id == id).quantity >
+            1
+          ) {
+            this.orderedProducts.find((product) => product.id == id).quantity--;
+          } else {
+            this.unSelectProduct(id);
+          }
+        } else {
+          console.error("Operasi tidak dikenali");
+        }
       },
       time: new Date(),
       // perbedaan menggunakan getter dan tidak adalah saat property ini dipanggil pada property change
