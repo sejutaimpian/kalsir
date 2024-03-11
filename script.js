@@ -117,6 +117,9 @@ document.addEventListener("alpine:init", () => {
         return prefix == undefined ? rupiah : rupiah ? "Rp. " + rupiah : "";
       },
       isPay: false,
+      get isShortcut() {
+        return Alpine.store("global").isShortcut;
+      },
       orderedProducts: [],
       get page() {
         return Alpine.store("global").page;
@@ -371,6 +374,13 @@ document.addEventListener("alpine:init", () => {
         "Sammy.png",
         "Snuggles.png",
       ],
+      isAction: false,
+      get isShortcut() {
+        return Alpine.store("global").isShortcut;
+      },
+      set isShortcut(param) {
+        Alpine.store("global").isShortcut = param;
+      },
       isModal: false,
       // Ternyata setter & getter sangat bermanfaat saat dikombinasikan dengan Alpine.Store
       get profile() {
@@ -431,6 +441,10 @@ document.addEventListener("alpine:init", () => {
     },
     importData() {
       data = JSON.parse(this.localData);
+      // Proses import masih manual karena mengutamakan reaktivity AlpineJS.
+      // Jadi setiap kali ada state $persist baru, ia harus ditambahkan manual ke importData()
+      // Tolong dibantu
+      this.isShortcut = JSON.parse(data.isShortcut);
       this.profile = JSON.parse(data.profile);
       this.products = JSON.parse(data.products);
       this.sortBy = JSON.parse(data.sortBy);
@@ -440,6 +454,7 @@ document.addEventListener("alpine:init", () => {
       this.localData = "";
       this.setToast("success", "Berhasil Import Data");
     },
+    isShortcut: Alpine.$persist(false).as("isShortcut"),
     isStorage: false,
     localData: "",
 

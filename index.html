@@ -65,86 +65,106 @@
                 <p class="text-sm leading-5 lg:text-base" x-text="profile.shopName"></p>
             </div>
         </div>
-        <div class="z-10 flex flex-col items-center gap-1 md:items-stretch">
-            <button @click="$store.global.isStorage = true"
-                class=" inline-flex items-center gap-1 px-2 py-1 font-medium border border-gray-800 min-h-[2.25rem] md:min-h-[2.5rem] rounded-lg focus:outline-none focus-visible:ring hover:bg-gray-100">
+        <div class="z-10 flex items-center" @click.outside="isAction = false">
+            <button @click="isAction = !isAction"
+                class="mr-4 font-medium rounded-lg focus:outline-none focus-visible:ring md:hidden">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                     stroke="currentColor" class="w-6 h-6">
                     <path stroke-linecap="round" stroke-linejoin="round"
-                        d="M20.25 6.375c0 2.278-3.694 4.125-8.25 4.125S3.75 8.653 3.75 6.375m16.5 0c0-2.278-3.694-4.125-8.25-4.125S3.75 4.097 3.75 6.375m16.5 0v11.25c0 2.278-3.694 4.125-8.25 4.125s-8.25-1.847-8.25-4.125V6.375m16.5 0v3.75m-16.5-3.75v3.75m16.5 0v3.75C20.25 16.153 16.556 18 12 18s-8.25-1.847-8.25-4.125v-3.75m16.5 0c0 2.278-3.694 4.125-8.25 4.125s-8.25-1.847-8.25-4.125" />
+                        d="M12 6.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 12.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 18.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5Z" />
                 </svg>
-                <span class="hidden sm:block">Data</span>
             </button>
-            <button @click="$store.global.isProduct = true"
-                class=" inline-flex items-center gap-1 px-2 py-1 font-medium border border-gray-800 min-h-[2.25rem] md:min-h-[2.5rem] rounded-lg focus:outline-none focus-visible:ring hover:bg-gray-100">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                    stroke="currentColor" class="w-6 h-6">
-                    <path stroke-linecap="round" stroke-linejoin="round"
-                        d="m21 7.5-9-5.25L3 7.5m18 0-9 5.25m9-5.25v9l-9 5.25M3 7.5l9 5.25M3 7.5v9l9 5.25m0-9v9" />
-                </svg>
-                <span class="hidden sm:block">Product</span>
-            </button>
-            <!-- Modal -->
-            <div x-show="isModal" x-transition x-cloak
-                class="fixed inset-0 z-50 flex items-center justify-center w-full bg-slate-800/80 md:mx-auto">
-                <div class="w-full max-w-xl mx-4 overflow-hidden bg-white rounded-sm shadow"
-                    @click.outside="toggleIsModal()">
-                    <div class="flex justify-between px-4 py-2 bg-emerald-600">
-                        <h2 class="text-xl font-semibold text-white lg:text-2xl">Edit Profile</h2>
-                    </div>
-                    <form @submit.prevent="toggleIsModal()" class="px-4 my-4">
-                        <div class="my-2">
-                            <label for="profile.cashierName" class="text-sm text-gray-700 lg:text-base">Nama
-                                Kasir</label>
-                            <input type="text" id="profile.cashierName" x-model="profile.cashierName"
-                                class="selection:bg-emerald-100 w-full min-h-[2.25rem] py-0 md:min-h-[2.5rem] border-b-2 font-medium focus:border-b-gray-800 border-b-gray-400 outline-0">
-                        </div>
-                        <div class="my-2">
-                            <label for="profile.shopName" class="text-sm text-gray-700 lg:text-base">Nama Toko</label>
-                            <input type="text" id="profile.shopName" x-model="profile.shopName"
-                                class="selection:bg-emerald-100 w-full min-h-[2.25rem] py-0 md:min-h-[2.5rem] border-b-2 font-medium focus:border-b-gray-800 border-b-gray-400 outline-0">
-                        </div>
-                        <div class="my-2">
-                            <label for="profile.address" class="text-sm text-gray-700 lg:text-base">Alamat Toko</label>
-                            <input type="text" id="profile.address" x-model="profile.address"
-                                class="selection:bg-emerald-100 w-full min-h-[2.25rem] py-0 md:min-h-[2.5rem] border-b-2 font-medium focus:border-b-gray-800 border-b-gray-400 outline-0">
-                        </div>
-                        <div class="my-2">
-                            <label for="profile.message" class="text-sm text-gray-700 lg:text-base">Message</label>
-                            <input type="text" id="profile.message" x-model="profile.message"
-                                class="selection:bg-emerald-100 w-full min-h-[2.25rem] py-0 md:min-h-[2.5rem] border-b-2 font-medium focus:border-b-gray-800 border-b-gray-400 outline-0">
-                        </div>
-                        <div class="my-2">
-                            <label for="profile.emailAddress" class="text-sm text-gray-700 lg:text-base">Email
-                                Adress</label>
-                            <input type="text" id="profile.emailAddress" x-model="profile.emailAddress"
-                                class="selection:bg-emerald-100 w-full min-h-[2.25rem] py-0 md:min-h-[2.5rem] border-b-2 font-medium focus:border-b-gray-800 border-b-gray-400 outline-0">
-                        </div>
-                        <div class="my-2">
-                            <label for="profile.phoneNumber" class="text-sm text-gray-700 lg:text-base">Phone
-                                Number</label>
-                            <input type="text" id="profile.phoneNumber" x-model="profile.phoneNumber"
-                                class="selection:bg-emerald-100 w-full min-h-[2.25rem] py-0 md:min-h-[2.5rem] border-b-2 font-medium focus:border-b-gray-800 border-b-gray-400 outline-0">
-                        </div>
-                        <div class="my-2">
-                            <label for="profile.profilePicture" class="text-sm text-gray-700 lg:text-base">Profile
-                                Picture</label>
-                            <input type="text" id="profile.profilePicture" x-model="profile.profilePicture"
-                                class="selection:bg-emerald-100 w-full min-h-[2.25rem] py-0 md:min-h-[2.5rem] border-b-2 font-medium focus:border-b-gray-800 border-b-gray-400 outline-0">
-                            <div class="flex items-center mt-2 overflow-x-scroll no-scrollbar">
-                                <template x-for="avatar in avatars">
-                                    <img x-on:click="profile.profilePicture = avatar" :src="avatar" alt="avatar"
-                                        :class="profile.profilePicture == avatar ? 'border-2 border-gray-600':''"
-                                        class="w-20 h-20 mx-2 my-2 bg-gray-200 rounded-full cursor-pointer">
-                                </template>
-                            </div>
-                        </div>
-                        <div class="flex justify-end mt-8">
-                            <button type="submit"
-                                class="inline-flex items-center justify-center px-2 font-medium text-emerald-600 focus:outline-none">UPDATE</button>
-                        </div>
-                    </form>
+            <div :class="isAction ? 'flex' : 'hidden'" x-cloak
+                class="absolute flex-col flex-wrap gap-2 p-4 bg-white rounded shadow md:flex right-4 md:shadow-none md:bg-transparent md:flex-nowrap md:flex-row md:static top-full">
+                <button @click="isShortcut = !isShortcut"
+                    class=" inline-flex items-center gap-1 px-2 py-1 font-medium border border-gray-800 min-h-[2.25rem] md:min-h-[2.5rem] rounded-lg focus:outline-none focus-visible:ring hover:bg-gray-100">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
+                        stroke="currentColor" class="w-6 h-6">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M12 18v-5.25m0 0a6.01 6.01 0 001.5-.189m-1.5.189a6.01 6.01 0 01-1.5-.189m3.75 7.478a12.06 12.06 0 01-4.5 0m3.75 2.383a14.406 14.406 0 01-3 0M14.25 18v-.192c0-.983.658-1.823 1.508-2.316a7.5 7.5 0 10-7.517 0c.85.493 1.509 1.333 1.509 2.316V18" />
+                    </svg>
+                    <span>Shortcut</span>
+                </button>
+                <button @click="$store.global.isStorage = true"
+                    class=" inline-flex items-center gap-1 px-2 py-1 font-medium border border-gray-800 min-h-[2.25rem] md:min-h-[2.5rem] rounded-lg focus:outline-none focus-visible:ring hover:bg-gray-100">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                        stroke="currentColor" class="w-6 h-6">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M20.25 6.375c0 2.278-3.694 4.125-8.25 4.125S3.75 8.653 3.75 6.375m16.5 0c0-2.278-3.694-4.125-8.25-4.125S3.75 4.097 3.75 6.375m16.5 0v11.25c0 2.278-3.694 4.125-8.25 4.125s-8.25-1.847-8.25-4.125V6.375m16.5 0v3.75m-16.5-3.75v3.75m16.5 0v3.75C20.25 16.153 16.556 18 12 18s-8.25-1.847-8.25-4.125v-3.75m16.5 0c0 2.278-3.694 4.125-8.25 4.125s-8.25-1.847-8.25-4.125" />
+                    </svg>
+                    <span>Data</span>
+                </button>
+                <button @click="$store.global.isProduct = true"
+                    class=" inline-flex items-center gap-1 px-2 py-1 font-medium border border-gray-800 min-h-[2.25rem] md:min-h-[2.5rem] rounded-lg focus:outline-none focus-visible:ring hover:bg-gray-100">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                        stroke="currentColor" class="w-6 h-6">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="m21 7.5-9-5.25L3 7.5m18 0-9 5.25m9-5.25v9l-9 5.25M3 7.5l9 5.25M3 7.5v9l9 5.25m0-9v9" />
+                    </svg>
+                    <span>Product</span>
+                </button>
+            </div>
+        </div>
+        <!-- Modal -->
+        <div x-show="isModal" x-transition x-cloak
+            class="fixed inset-0 z-50 flex items-center justify-center w-full bg-slate-800/80 md:mx-auto">
+            <div class="w-full max-w-xl mx-4 overflow-hidden bg-white rounded-sm shadow"
+                @click.outside="toggleIsModal()">
+                <div class="flex justify-between px-4 py-2 bg-emerald-600">
+                    <h2 class="text-xl font-semibold text-white lg:text-2xl">Edit Profile</h2>
                 </div>
+                <form @submit.prevent="toggleIsModal()" class="px-4 my-4">
+                    <div class="my-2">
+                        <label for="profile.cashierName" class="text-sm text-gray-700 lg:text-base">Nama
+                            Kasir</label>
+                        <input type="text" id="profile.cashierName" x-model="profile.cashierName"
+                            class="selection:bg-emerald-100 w-full min-h-[2.25rem] py-0 md:min-h-[2.5rem] border-b-2 font-medium focus:border-b-gray-800 border-b-gray-400 outline-0">
+                    </div>
+                    <div class="my-2">
+                        <label for="profile.shopName" class="text-sm text-gray-700 lg:text-base">Nama Toko</label>
+                        <input type="text" id="profile.shopName" x-model="profile.shopName"
+                            class="selection:bg-emerald-100 w-full min-h-[2.25rem] py-0 md:min-h-[2.5rem] border-b-2 font-medium focus:border-b-gray-800 border-b-gray-400 outline-0">
+                    </div>
+                    <div class="my-2">
+                        <label for="profile.address" class="text-sm text-gray-700 lg:text-base">Alamat Toko</label>
+                        <input type="text" id="profile.address" x-model="profile.address"
+                            class="selection:bg-emerald-100 w-full min-h-[2.25rem] py-0 md:min-h-[2.5rem] border-b-2 font-medium focus:border-b-gray-800 border-b-gray-400 outline-0">
+                    </div>
+                    <div class="my-2">
+                        <label for="profile.message" class="text-sm text-gray-700 lg:text-base">Message</label>
+                        <input type="text" id="profile.message" x-model="profile.message"
+                            class="selection:bg-emerald-100 w-full min-h-[2.25rem] py-0 md:min-h-[2.5rem] border-b-2 font-medium focus:border-b-gray-800 border-b-gray-400 outline-0">
+                    </div>
+                    <div class="my-2">
+                        <label for="profile.emailAddress" class="text-sm text-gray-700 lg:text-base">Email
+                            Adress</label>
+                        <input type="text" id="profile.emailAddress" x-model="profile.emailAddress"
+                            class="selection:bg-emerald-100 w-full min-h-[2.25rem] py-0 md:min-h-[2.5rem] border-b-2 font-medium focus:border-b-gray-800 border-b-gray-400 outline-0">
+                    </div>
+                    <div class="my-2">
+                        <label for="profile.phoneNumber" class="text-sm text-gray-700 lg:text-base">Phone
+                            Number</label>
+                        <input type="text" id="profile.phoneNumber" x-model="profile.phoneNumber"
+                            class="selection:bg-emerald-100 w-full min-h-[2.25rem] py-0 md:min-h-[2.5rem] border-b-2 font-medium focus:border-b-gray-800 border-b-gray-400 outline-0">
+                    </div>
+                    <div class="my-2">
+                        <label for="profile.profilePicture" class="text-sm text-gray-700 lg:text-base">Profile
+                            Picture</label>
+                        <input type="text" id="profile.profilePicture" x-model="profile.profilePicture"
+                            class="selection:bg-emerald-100 w-full min-h-[2.25rem] py-0 md:min-h-[2.5rem] border-b-2 font-medium focus:border-b-gray-800 border-b-gray-400 outline-0">
+                        <div class="flex items-center mt-2 overflow-x-scroll no-scrollbar">
+                            <template x-for="avatar in avatars">
+                                <img x-on:click="profile.profilePicture = avatar" :src="avatar" alt="avatar"
+                                    :class="profile.profilePicture == avatar ? 'border-2 border-gray-600':''"
+                                    class="w-20 h-20 mx-2 my-2 bg-gray-200 rounded-full cursor-pointer">
+                            </template>
+                        </div>
+                    </div>
+                    <div class="flex justify-end mt-8">
+                        <button type="submit"
+                            class="inline-flex items-center justify-center px-2 font-medium text-emerald-600 focus:outline-none">UPDATE</button>
+                    </div>
+                </form>
             </div>
         </div>
     </header>
@@ -252,15 +272,23 @@
                         </div>
                     </div>
                     <!-- Tips Shortcut -->
-                    <!-- Hint -->
-                    <div class="flex-col hidden p-2 mt-4 bg-gray-200 border border-gray-400 sm:flex min-h-64">
-                        <div class="flex items-center gap-2">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
-                                stroke="currentColor" class="w-5 h-5">
-                                <path stroke-linecap="round" stroke-linejoin="round"
-                                    d="M12 18v-5.25m0 0a6.01 6.01 0 001.5-.189m-1.5.189a6.01 6.01 0 01-1.5-.189m3.75 7.478a12.06 12.06 0 01-4.5 0m3.75 2.383a14.406 14.406 0 01-3 0M14.25 18v-.192c0-.983.658-1.823 1.508-2.316a7.5 7.5 0 10-7.517 0c.85.493 1.509 1.333 1.509 2.316V18" />
-                            </svg>
-                            <span class="pt-0.5 font-bold text-lg uppercase">Keyboard Shortcut</span>
+                    <div x-show="!filterByKeyword && isShortcut"
+                        class="flex-col hidden p-2 mt-4 bg-gray-200 border border-gray-400 sm:flex min-h-64">
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center gap-2">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
+                                    stroke="currentColor" class="w-5 h-5">
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                        d="M12 18v-5.25m0 0a6.01 6.01 0 001.5-.189m-1.5.189a6.01 6.01 0 01-1.5-.189m3.75 7.478a12.06 12.06 0 01-4.5 0m3.75 2.383a14.406 14.406 0 01-3 0M14.25 18v-.192c0-.983.658-1.823 1.508-2.316a7.5 7.5 0 10-7.517 0c.85.493 1.509 1.333 1.509 2.316V18" />
+                                </svg>
+                                <span class="pt-0.5 font-bold text-lg uppercase">Keyboard Shortcut</span>
+                            </div>
+                            <button>
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                    stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
+                                </svg>
+                            </button>
                         </div>
                         <p class="pl-7">
                             Keyboard Shortcuts membantumu mempercepat pengerjaan Kasir dengan pintasan tombol Keyboard.
