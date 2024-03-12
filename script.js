@@ -809,6 +809,179 @@ document.addEventListener("alpine:init", () => {
     ]).as("units"),
 
     // Profile
+    formatData() {
+      this.types = [];
+      this.units = [];
+      this.products = [];
+      this.setToast("success", "Berhasil Format Data");
+    },
+    resetData() {
+      this.types = [
+        {
+          id: 1,
+          name: "Sembako",
+          description: "Bahan/Kebutuhan Dapur",
+          icon: "sembako.png",
+        },
+        {
+          id: 2,
+          name: "Rokok",
+          description: "Rokok",
+          icon: "rokok.png",
+        },
+        {
+          id: 3,
+          name: "Jajanan",
+          description: "Jajanan Makanan & Minuman",
+          icon: "jajanan.png",
+        },
+        {
+          id: 4,
+          name: "Bahan Bangunan",
+          description: "Bahan Bangunan",
+          icon: "bangunan.png",
+        },
+      ];
+      this.units = [
+        {
+          id: 1,
+          name: "1 Pieces",
+          shortName: "pcs",
+        },
+        {
+          id: 2,
+          name: "1 Kilogram",
+          shortName: "kg",
+        },
+        {
+          id: 3,
+          name: "½ Kilogram",
+          shortName: "½kg",
+        },
+        {
+          id: 4,
+          name: "¼ Kilogram",
+          shortName: "¼kg",
+        },
+        {
+          id: 5,
+          name: "1 Batang",
+          shortName: "btg",
+        },
+        {
+          id: 6,
+          name: "1 Bungkus",
+          shortName: "bks",
+        },
+      ];
+      this.products = [
+        {
+          id: 1,
+          name: "Beras",
+          description: "Beras",
+          typeId: 1,
+          unitId: 2,
+          price: 17000,
+        },
+        {
+          id: 2,
+          name: "Minyak Sayur",
+          description: "Minyak Sayur Kiloan",
+          typeId: 1,
+          unitId: 2,
+          price: 17500,
+        },
+        {
+          id: 3,
+          name: "Minyak Sayur",
+          description: "Minyak Sayur Kiloan",
+          typeId: 1,
+          unitId: 3,
+          price: 9000,
+        },
+        {
+          id: 4,
+          name: "Minyak Sayur",
+          description: "Minyak Sayur Kiloan",
+          typeId: 1,
+          unitId: 4,
+          price: 5000,
+        },
+        {
+          id: 5,
+          name: "Djarum Coklat",
+          description: "Rokok Djarum Coklat",
+          typeId: 2,
+          unitId: 6,
+          price: 17000,
+        },
+        {
+          id: 6,
+          name: "Djarum Coklat",
+          description: "Rokok Djarum Coklat",
+          typeId: 2,
+          unitId: 5,
+          price: 2000,
+        },
+        {
+          id: 7,
+          name: "Djarum Super",
+          description: "Rokok Djarum Super",
+          typeId: 2,
+          unitId: 6,
+          price: 26000,
+        },
+        {
+          id: 8,
+          name: "Djarum Super",
+          description: "Rokok Djarum Super",
+          typeId: 2,
+          unitId: 5,
+          price: 2500,
+        },
+        {
+          id: 9,
+          name: "Power F",
+          description: "Minuman Gelas Power F",
+          typeId: 3,
+          unitId: 1,
+          price: 1000,
+        },
+        {
+          id: 10,
+          name: "Ale-ale",
+          description: "Minuman Gelas Ale-ale",
+          typeId: 3,
+          unitId: 1,
+          price: 1000,
+        },
+        {
+          id: 11,
+          name: "Qtela",
+          description: "Chiki qtela singkong",
+          typeId: 3,
+          unitId: 1,
+          price: 2500,
+        },
+        {
+          id: 12,
+          name: "Milkuat Beku",
+          description: "Milkuat Beku",
+          typeId: 3,
+          unitId: 1,
+          price: 2000,
+        },
+        {
+          id: 13,
+          name: "Real Good Beku",
+          description: "Real Good Beku",
+          typeId: 3,
+          unitId: 1,
+          price: 2000,
+        },
+      ];
+      this.setToast("success", "Berhasil Reset Data");
+    },
     profile: Alpine.$persist({
       address: "JL. Tangerang Selatan",
       cashierName: "Irma Tri Yuana",
