@@ -936,6 +936,15 @@
                                         </div>
                                     </div>
                                 </template>
+                                <div x-show="!products.length"
+                                    class="flex flex-col items-center justify-center w-full col-span-full">
+                                    <img src="404.png" alt="Waiting for order" class="max-h-72">
+                                    <div
+                                        class="flex flex-col items-center justify-center gap-2 text-center sm:min-h-52 sm:gap-y-5">
+                                        <h1 class="text-6xl font-extrabold">404</h1>
+                                        <div class="text-xl">Produk Tidak Ditemukan</div>
+                                    </div>
+                                </div>
                             </div>
                             <!-- Modal -->
                             <div x-show="isModalEditProduct" x-transition x-cloak x-trap="isModalEditProduct"
@@ -1097,6 +1106,15 @@
                                         </div>
                                     </div>
                                 </template>
+                                <div x-show="!types.length"
+                                    class="flex flex-col items-center justify-center w-full col-span-full">
+                                    <img src="404.png" alt="Waiting for order" class="max-h-72">
+                                    <div
+                                        class="flex flex-col items-center justify-center gap-2 text-center sm:min-h-52 sm:gap-y-5">
+                                        <h1 class="text-6xl font-extrabold">404</h1>
+                                        <div class="text-xl">Type Tidak Ditemukan</div>
+                                    </div>
+                                </div>
                             </div>
                             <!-- Modal -->
                             <div x-show="isModalEditType" x-transition x-cloak x-trap="isModalEditType"
@@ -1226,6 +1244,15 @@
                                         </div>
                                     </div>
                                 </template>
+                                <div x-show="!units.length"
+                                    class="flex flex-col items-center justify-center w-full col-span-full">
+                                    <img src="404.png" alt="Waiting for order" class="max-h-72">
+                                    <div
+                                        class="flex flex-col items-center justify-center gap-2 text-center sm:min-h-52 sm:gap-y-5">
+                                        <h1 class="text-6xl font-extrabold">404</h1>
+                                        <div class="text-xl">Unit Tidak Ditemukan</div>
+                                    </div>
+                                </div>
                             </div>
                             <!-- Modal -->
                             <div x-show="isModalEditUnit" x-transition x-cloak x-trap="isModalEditUnit"
