@@ -28,24 +28,8 @@
             /* Firefox */
         }
     </style>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    keyframes: {
-                        progress: {
-                            "0%": { transform: "translateX(-100%)" },
-                            "100%": { transform: "translateX(0)" },
-                        },
-                    },
-                    animation: {
-                        progress: "progress 2000ms 1",
-                    },
-                },
-            },
-        };
-    </script>
+    <!-- <script src="https://cdn.tailwindcss.com"></script> -->
+    <link rel="stylesheet" href="style.css">
     <script src="alpine-focus.js"></script>
     <!-- <script src="alpine-mask.js"></script> -->
     <script src="alpine-persist.js"></script>
@@ -198,7 +182,7 @@
                 <!-- Search & Order Product -->
                 <div class="sticky top-0 flex-1 px-4 bg-gray-50">
                     <!-- Input Search Product -->
-                    <div class="relative mt-2">
+                    <div class="relative my-2">
                         <input x-model="filterByKeyword" type="text" id="searchOrder" x-ref="searchInput"
                             @keyup.enter="$el.blur()" autocomplete="off"
                             :class="!products.length && filterByKeyword ? 'border-red-500' : ''"
