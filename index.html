@@ -113,7 +113,7 @@
                 <div class="flex justify-between px-4 py-2 bg-emerald-600">
                     <h2 class="text-xl font-semibold text-white lg:text-2xl">Edit Profile</h2>
                 </div>
-                <form @submit.prevent="toggleIsModal()" class="px-4 my-4">
+                <form @submit.prevent="toggleIsModal()" class="px-4 mb-4">
                     <div class="my-2">
                         <label for="profile.cashierName" class="text-sm text-gray-700 lg:text-base">Nama
                             Kasir</label>
@@ -138,7 +138,7 @@
                     <div class="my-2">
                         <label for="profile.emailAddress" class="text-sm text-gray-700 lg:text-base">Email
                             Adress</label>
-                        <input type="text" id="profile.emailAddress" x-model="profile.emailAddress"
+                        <input type="email" id="profile.emailAddress" x-model="profile.emailAddress"
                             class="selection:bg-emerald-100 w-full min-h-[2.25rem] py-0 md:min-h-[2.5rem] border-b-2 font-medium focus:border-b-gray-800 border-b-gray-400 outline-0">
                     </div>
                     <div class="my-2">
@@ -156,11 +156,11 @@
                             <template x-for="avatar in avatars">
                                 <img x-on:click="profile.profilePicture = avatar" :src="avatar" alt="avatar"
                                     :class="profile.profilePicture == avatar ? 'border-2 border-gray-600':''"
-                                    class="w-20 h-20 mx-2 my-2 bg-gray-200 rounded-full cursor-pointer">
+                                    class="mx-2 my-2 bg-gray-200 rounded-full cursor-pointer size-6 sm:size-10 md:size-16">
                             </template>
                         </div>
                     </div>
-                    <div class="flex justify-end mt-8">
+                    <div class="flex justify-end mt-4 md:mt-8">
                         <button type="submit"
                             class="inline-flex items-center justify-center px-2 font-medium text-emerald-600 focus:outline-none">UPDATE</button>
                     </div>
