@@ -5,11 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kalsir</title>
-
     <link rel="shortcut icon" href="logo.png" type="image/x-icon">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans&display=swap" rel="stylesheet">
+    <link rel="manifest" href="manifest.json">
     <style>
         [x-cloak] {
             display: none !important;
@@ -28,10 +25,16 @@
             /* Firefox */
         }
     </style>
-    <!-- <script src="https://cdn.tailwindcss.com"></script> -->
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/sw.js')
+            })
+        }
+    </script>
+
     <link rel="stylesheet" href="style.css">
     <script src="alpine-focus.js"></script>
-    <!-- <script src="alpine-mask.js"></script> -->
     <script src="alpine-persist.js"></script>
     <script src="script.js"></script>
     <script defer src="alpine.js"></script>
@@ -668,7 +671,7 @@
                         <div
                             class="w-full px-4 py-2 space-y-1 border-t sm:border-0 bg-gray-50 sm:w-1/2 sm:pl-6 sm:pr-0">
                             <div class="flex items-center justify-between gap-x-2">
-                                <input type="number" placeholder="Bayar" min="0" x-model="pay"
+                                <input type="number" placeholder="Bayar" min="0" x-model="pay" name="pay"
                                     @keyup.enter="isPay = false"
                                     class="w-full px-2 py-1 bg-white border outline-none selection:bg-emerald-100 md:min-h-11 min-h-10 border-emerald-500 rounded-xl">
                                 <button @click="isPay = false">
@@ -827,7 +830,7 @@
                                 </div>
                                 <!-- Action -->
                                 <div class="flex flex-1 gap-2">
-                                    <input x-model="filterProductByKeyword" type="text"
+                                    <input x-model="filterProductByKeyword" name="filterProductByKeyword" type="text"
                                         class="flex-1 w-full px-2 py-1 bg-white border outline-none border-emerald-500 rounded-xl"
                                         placeholder="Cari produk berdasarkan nama ...">
                                     <div class="relative" @mouseleave="isActionFilter = false"
@@ -1030,7 +1033,7 @@
                                         class="w-full min-h-[2.25rem] py-0 md:min-h-[2.5rem] border-b-2 font-medium focus:border-b-gray-800 border-b-gray-400 outline-0">
                                 </div>
                                 <div class="col-span-full">
-                                    <label for="icon" class="text-sm text-gray-700 lg:text-base">Icon
+                                    <label class="text-sm text-gray-700 lg:text-base">Icon
                                         Type</label>
                                     <div class="flex flex-row gap-1 overflow-x-scroll md:flex-wrap no-scrollbar">
                                         <template x-for="(icon, index) in icons" :key="index">
@@ -1142,7 +1145,7 @@
                                                 class="selection:bg-emerald-100 w-full min-h-[2.25rem] py-0 md:min-h-[2.5rem] border-b-2 font-medium focus:border-b-gray-800 border-b-gray-400 outline-0">
                                         </div>
                                         <div class="my-2">
-                                            <label for="icon" class="text-sm text-gray-700 lg:text-base">Icon
+                                            <label class="text-sm text-gray-700 lg:text-base">Icon
                                                 Type</label>
                                             <div class="flex flex-wrap gap-2">
                                                 <template x-for="(icon, index) in icons" :key="index">
