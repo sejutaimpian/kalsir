@@ -625,6 +625,11 @@ video {
   grid-column: 1 / -1;
 }
 
+.mx-0 {
+  margin-left: 0rem;
+  margin-right: 0rem;
+}
+
 .mx-2 {
   margin-left: 0.5rem;
   margin-right: 0.5rem;
@@ -1736,6 +1741,10 @@ video {
     border-width: 0px;
   }
 
+  .sm\:mx-0 {
+    margin-left: 0rem;
+    margin-right: 0rem;
+  }
   .sm\:px-0 {
     padding-left: 0px;
     padding-right: 0px;

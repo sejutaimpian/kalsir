@@ -201,7 +201,7 @@
                         </button>
                     </div>
                     <!-- Product List -->
-                    <div class="absolute inset-x-0 bg-gray-100 sm:static max-h-[65vh] sm:max-h-max overflow-y-auto"
+                    <div class="absolute inset-x-0 mx-4 sm:mx-0 bg-gray-100  sm:static max-h-[65vh] sm:max-h-max overflow-y-auto"
                         x-ref="searchList" @keyup.down="$focus.wrap().next()" @keyup.up="$focus.wrap().previous()"
                         @keyup.ctrl.down="$focus.last()">
                         <template x-for="(product, index) in products" :key="index">
